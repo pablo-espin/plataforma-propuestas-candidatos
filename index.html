@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Plataforma de análisis de propuestas electorales Colombia 2026 — Fundación para el Estado de Derecho" />
+  <title>Plataforma del Estado de Derecho - FEDe</title>
+
+  <link rel="icon" href="img/logo-fede.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ── LOADING SCREEN ─────────────────────────────── -->
+  <div id="loading-screen" aria-label="Cargando" role="status">
+    <div class="loading-logo" aria-hidden="true">
+      <div class="lm1"></div><div class="lm2"></div>
+      <div class="lm3"></div><div class="lm4"></div>
+    </div>
+    <span class="loading-text">Cargando datos…</span>
+  </div>
+
+  <!-- ── NAVIGATION ────────────────────────────────── -->
+  <nav role="navigation" aria-label="Navegación principal">
+    <button class="nav-logo" onclick="App.goHome()" aria-label="Inicio — Semáforo de la Campaña">
+      <img src="img/logo-fede.svg" alt="" aria-hidden="true" class="nav-logo-img">
+      <div class="nav-wordmark">
+        <div class="nav-title">Plataforma del Estado de Derecho</div>
+        <div class="nav-subtitle">Elecciones 2026</div>
+      </div>
+    </button>
+
+    <div class="nav-right">
+      <button class="nav-link" onclick="App.goHome()">Candidatos</button>
+      <button class="nav-link" onclick="App.showMetodologia()">Metodología</button>
+    </div>
+  </nav>
+
+  <!-- ── ERROR BANNER ───────────────────────────────── -->
+  <div id="error-banner" role="alert" aria-live="assertive"></div>
+
+  <!-- ══════════════════════════════════════════════════
+       PAGE: HOME
+  ═══════════════════════════════════════════════════ -->
+  <div id="page-home" class="page active">
+
+    <header class="home-header">
+      <div class="dot-grid" id="dot-grid" aria-hidden="true"></div>
+      <div class="home-header-content">
+        <div class="year-badge">Elecciones 2026</div>
+        <h1>Propuestas de los<br>cinco candidatos punteros</h1>
+        <p>Analice y compare sus programas en cinco temas clave comentados por expertos. Le mostramos las propuestas que amenazan el Estado de Derecho y la democracia liberal.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="candidates-grid" id="candidates-grid" role="list"
+           aria-label="Candidatos presidenciales">
+        <!-- Renderizado por render.js -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       PAGE: PROFILE
+  ═══════════════════════════════════════════════════ -->
+  <div id="page-profile" class="page">
+
+    <!-- Header del candidato -->
+    <header class="profile-header" id="profile-header">
+      <div class="profile-inner">
+        <div class="profile-top">
+          <div class="profile-photo-col">
+            <div id="profile-avatar" aria-hidden="true"></div>
+          </div>
+          <div class="profile-info">
+            <h1 id="profile-name"></h1>
+            <div class="profile-party-vp" id="profile-party-vp">
+              <div class="profile-party-col">
+                <div id="profile-party-logo" class="profile-party-logo"></div>
+              </div>
+              <div class="profile-vp-col">
+                <span class="profile-vp-label">Fórmula vicepresidencial</span>
+                <p id="profile-vp"></p>
+              </div>
+            </div>
+            <div class="profile-edu-bio" id="profile-edu-bio">
+              <span id="profile-edu"></span>
+              <p id="profile-bio"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Banner de comparación -->
+    <div id="compare-banner" role="status" aria-live="polite"></div>
+
+    <!-- Controles de comparación -->
+    <div class="profile-actions">
+      <label for="compare-select" class="sr-only">Seleccionar candidato para comparar</label>
+      <select id="compare-select" aria-label="Comparar con otro candidato">
+        <option value="">— Comparar con otro candidato —</option>
+      </select>
+      <button class="compare-btn" onclick="App.doCompare()">Comparar</button>
+      <button id="clear-compare-btn" onclick="App.clearCompare()">✕ Quitar comparación</button>
+    </div>
+
+    <!-- Propuestas -->
+    <main>
+      <div class="proposals-wrapper">
+        <div id="filter-bar" class="filter-bar"></div>
+        <div class="proposals-container" id="proposals-container">
+          <!-- Renderizado por render.js -->
+        </div>
+      </div>
+
+      <!-- Red Flags -->
+      <section id="red-flags-section" aria-label="Red Flags">
+        <div class="rf-inner">
+          <div class="rf-header">
+            <div class="rf-icon" aria-hidden="true">🚩</div>
+            <div class="rf-header-text">
+              <h2>Red Flags</h2>
+              <p>Señales de alerta democrática detectadas en este candidato</p>
+            </div>
+          </div>
+          <div class="rf-grid" id="red-flags-grid">
+            <!-- Renderizado por render.js -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ── MODAL ──────────────────────────────────────── -->
+  <div id="modal-overlay" role="dialog" aria-modal="true"
+       aria-label="Información adicional" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-header">
+        <span id="modal-icon" aria-hidden="true"></span>
+        <h2 id="modal-title"></h2>
+        <button id="modal-close" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="modal-body-content"></div>
+      </div>
+      <div class="modal-footer" id="modal-footer"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       PAGE: METODOLOGÍA
+  ═══════════════════════════════════════════════════ -->
+  <div id="page-metodologia" class="page">
+    <header class="metodologia-header">
+      <div class="year-badge">FEDe 2026</div>
+      <h1>Metodología</h1>
+      <p>Cómo analizamos y evaluamos las propuestas de los candidatos presidenciales.</p>
+    </header>
+    <main class="metodologia-body">
+      <p>Contenido próximamente.</p>
+    </main>
+  </div>
+
+  <!-- ── SCRIPTS ────────────────────────────────────── -->
+  <!--
+    ORDEN IMPORTANTE — no cambiar:
+    1. config.js  → constantes globales (CONFIG)
+    2. data.js    → lógica de fetch (Data)
+    3. render.js  → lógica de DOM (Render)
+    4. app.js     → navegación y eventos (App)
+  -->
+  <script src="config.js"></script>
+  <script src="data.js"></script>
+  <script src="render.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

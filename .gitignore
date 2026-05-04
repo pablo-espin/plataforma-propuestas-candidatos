@@ -1,0 +1,6 @@
+# Windows metadata files (WSL artifacts)
+*:Zone.Identifier
+
+# OS files
+.DS_Store
+Thumbs.db
