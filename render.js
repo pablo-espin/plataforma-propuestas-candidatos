@@ -265,6 +265,51 @@ const Render = (() => {
   }
 
   /* ─────────────────────────────────────────
+     BREADCRUMB
+  ───────────────────────────────────────── */
+
+  function breadcrumb(candidato) {
+    const el = document.getElementById('breadcrumb-name');
+    if (el) el.textContent = candidato.nombre;
+  }
+
+  /* ─────────────────────────────────────────
+     OTROS CANDIDATOS
+  ───────────────────────────────────────── */
+
+  function otrosCandidatos(candidatos, currentId) {
+    const section = document.getElementById('otros-candidatos-section');
+    const grid    = document.getElementById('otros-candidatos-grid');
+    const otros   = candidatos.filter(c => c.id !== currentId);
+
+    if (otros.length === 0) { section.style.display = 'none'; return; }
+
+    section.style.display = 'block';
+    grid.innerHTML = otros.map(c => {
+      const color     = c.color_hex || CONFIG.COLORS.blue;
+      const isLight   = isLightColor(color);
+      const textColor = isLight ? '#222' : '#fff';
+      const photoInner = c.foto_url
+        ? `<img src="${c.foto_url}" alt="${c.nombre}" class="otro-photo-img">`
+        : `<span>${getIniciales(c.nombre)}</span>`;
+
+      return `
+        <div class="otro-card" role="button" tabindex="0"
+             onclick="App.showCandidato('${c.id}')"
+             onkeydown="if(event.key==='Enter'||event.key===' ')App.showCandidato('${c.id}')"
+             aria-label="Ver propuestas de ${c.nombre}">
+          <div class="otro-photo" style="background:${color};color:${textColor};">
+            ${photoInner}
+          </div>
+          <div class="otro-info">
+            <div class="otro-name">${c.nombre}</div>
+            <div class="otro-party">${c.partido}</div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  /* ─────────────────────────────────────────
      RED FLAGS
   ───────────────────────────────────────── */
 
@@ -473,9 +518,11 @@ const Render = (() => {
   // API pública
   return {
     home,
+    breadcrumb,
     perfilHeader,
     compareSelect,
     propuestas,
+    otrosCandidatos,
     redFlags,
     filterBar,
     applyFilters,

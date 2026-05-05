@@ -119,12 +119,14 @@ const App = (() => {
     buildPropuestaMap(candidatoData);
 
     // Renderizar
+    Render.breadcrumb(candidato);
     Render.perfilHeader(candidato);
     Render.compareSelect(state.candidatos, id);
     Render.propuestas(
       candidatoData, candidato.nombre, candidato.color_hex,
       null, null, null
     );
+    Render.otrosCandidatos(state.candidatos, id);
     Render.redFlags(candidatoData.redflags);
     Render.compareBanner(null, null);
 

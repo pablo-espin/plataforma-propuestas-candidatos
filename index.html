@@ -68,6 +68,13 @@
   ═══════════════════════════════════════════════════ -->
   <div id="page-profile" class="page">
 
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" role="navigation" aria-label="Navegación de ruta">
+      <button class="breadcrumb-link" onclick="App.goHome()">Inicio</button>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+      <span id="breadcrumb-name" class="breadcrumb-current"></span>
+    </div>
+
     <!-- Header del candidato -->
     <header class="profile-header" id="profile-header">
       <div class="profile-inner">
@@ -117,6 +124,14 @@
           <!-- Renderizado por render.js -->
         </div>
       </div>
+
+      <!-- Ver otro candidato -->
+      <section id="otros-candidatos-section" aria-label="Ver otro candidato">
+        <div class="otros-inner">
+          <h2 class="otros-title">Ver otro candidato</h2>
+          <div id="otros-candidatos-grid" class="otros-grid"></div>
+        </div>
+      </section>
 
       <!-- Red Flags -->
       <section id="red-flags-section" aria-label="Red Flags">
