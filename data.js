@@ -140,6 +140,7 @@ const Data = (() => {
       const alerta = tieneAlerta ? {
         nivel:       p.semaforo, // 'amarillo' o 'rojo'
         explicacion: p.alerta_explicacion,
+        mostrarBtn:  (p.mostrar_alerta_btn || '').toLowerCase() !== 'no',
       } : null;
 
       porTema[p.tema].push({

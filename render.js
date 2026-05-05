@@ -73,13 +73,13 @@ const Render = (() => {
       : '';
 
     const partyVpEl = document.getElementById('profile-party-vp');
-    partyVpEl.style.cssText = `background:${tintBg};color:#1a1a1a;`;
+    partyVpEl.style.cssText = 'color:#1a1a1a;';
 
     const vpEl = document.getElementById('profile-vp');
     vpEl.textContent = candidato.formula_vp;
 
     const eduBioEl = document.getElementById('profile-edu-bio');
-    eduBioEl.style.cssText = `background:${tintBg};color:#1a1a1a;`;
+    eduBioEl.style.cssText = 'color:#1a1a1a;';
 
     document.getElementById('profile-edu').textContent = '🎓 ' + candidato.educacion;
     document.getElementById('profile-bio').textContent = candidato.biografia;
@@ -163,7 +163,8 @@ const Render = (() => {
   }
 
   function renderPropuesta(p) {
-    const alertaBtn = p.alerta ? renderAlertaBtn(p.alerta, p.id) : '';
+    const showAlertaBtn = p.alerta && p.alerta.mostrarBtn;
+    const alertaBtn = showAlertaBtn ? renderAlertaBtn(p.alerta, p.id) : '';
     const expertBtns = p.experts && p.experts.length > 0
       ? p.experts.map((exp, i) => renderExpertBtn(exp, p.id, i)).join('')
       : '';
@@ -173,7 +174,7 @@ const Render = (() => {
     const subtemaTag = p.subtema
       ? `<span class="subtema-tag">${p.subtema}</span>`
       : '';
-    const alertaBubble = p.alerta ? renderAlertaBubble(p.alerta, p.id) : '';
+    const alertaBubble = showAlertaBtn ? renderAlertaBubble(p.alerta, p.id) : '';
     const commentBubbles = p.experts && p.experts.length > 0
       ? p.experts.map((exp, i) => renderExpertCommentBubble(exp, p.id, i)).join('')
       : '';
@@ -419,7 +420,7 @@ const Render = (() => {
 
     const subtemasGroup = subtemas.length > 0 ? `
       <div class="filter-group">
-        <span class="filter-label">Subtemas</span>
+        <span class="filter-label">Temas</span>
         <div class="filter-tags">
           ${subtemas.map(s => `
             <button class="filter-tag${activeSubtemas.has(s) ? ' active' : ''}"
@@ -430,7 +431,7 @@ const Render = (() => {
 
     const alertsGroup = alertLevels.length > 0 ? `
       <div class="filter-group">
-        <span class="filter-label">Estado de Derecho</span>
+        <span class="filter-label">Nivel de riesgo</span>
         <div class="filter-tags">
           ${alertLevels.map(level => `
             <button class="filter-tag filter-alert-${level}${activeAlerts.has(level) ? ' active' : ''}"
@@ -443,6 +444,7 @@ const Render = (() => {
 
     bar.style.display = 'flex';
     bar.innerHTML = `
+      <span class="proposals-section-label">Filtros</span>
       ${subtemasGroup}
       ${alertsGroup}
       <button class="filter-clear" id="filter-clear"
