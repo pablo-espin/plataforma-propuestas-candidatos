@@ -974,6 +974,14 @@ nav {
   justify-content: center;
   font-size: 16px;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.sector-icon img {
+  width: 32px;
+  height: 32px;
+  display: block;
+  flex-shrink: 0;
 }
 
 .sector-chevron {
