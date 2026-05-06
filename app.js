@@ -50,15 +50,6 @@ const App = (() => {
 
     build();
     window.addEventListener('resize', build);
-
-    // Toggle fill on each hover entry — state persists until hovered again
-    grid.addEventListener('mouseover', e => {
-      const dot = e.target.closest('.dot');
-      if (!dot) return;
-      if (!dot.contains(e.relatedTarget)) {
-        dot.classList.toggle('dot-toggled');
-      }
-    });
   }
 
   async function init() {
