@@ -316,6 +316,17 @@ nav {
   font-weight: 400;
 }
 
+/* ─── HOME — instructions ────────────────────────────────── */
+
+.home-instructions {
+  text-align: center;
+  font-family: var(--font-main);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--gray-dark);
+  padding: 2.5rem 1rem 0;
+}
+
 /* ─── HOME — candidates grid ─────────────────────────────── */
 
 .candidates-grid {
@@ -1610,5 +1621,473 @@ nav {
   .rf-grid { grid-template-columns: 1fr; }
 
   .modal { margin: 0.5rem; }
+}
+
+/* ─── HOME — sectores grid ───────────────────────────── */
+
+.sectores-section {
+  padding: 2.5rem 2rem 8rem;
+}
+
+.sectores-section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sectores-section-title {
+  font-family: var(--font-main);
+  font-size: 28px;
+  font-weight: 400;
+  color: var(--gray-dark);
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.sectores-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+}
+
+.sector-card {
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 200px;
+  aspect-ratio: 1;
+  background: var(--white);
+  border-radius: 0;
+  box-shadow: var(--shadow-card);
+  border: none;
+  padding: 1.25rem 1rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: box-shadow var(--transition), transform var(--transition);
+  text-align: center;
+}
+
+.sector-card:hover,
+.sector-card:focus-visible {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
+  outline: none;
+}
+
+.sector-card-icon {
+  width: 112px;
+  height: 112px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.sector-card-icon img {
+  display: block;
+  width: 90px;
+  height: 90px;
+  max-width: 90px;
+  max-height: 90px;
+  object-fit: contain;
+}
+
+.sector-card-name {
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--gray-dark);
+  line-height: 1.2;
+}
+
+/* ─── SECTOR PAGE — breadcrumb ──────────────────────── */
+
+#page-sector .breadcrumb {
+  background: #d8d8d8;
+  max-width: none;
+  margin: 0;
+  padding-left: max(2rem, calc((100% - 1100px) / 2 + 2rem));
+  padding-right: max(2rem, calc((100% - 1100px) / 2 + 2rem));
+}
+
+/* ─── SECTOR PAGE — hero ─────────────────────────────── */
+
+.sector-hero {
+  background: #d8d8d8;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sector-hero-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sector-hero-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sector-hero h1 {
+  font-family: var(--font-title);
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 800;
+  color: var(--gray-dark);
+  margin: 0;
+}
+
+/* ─── SECTOR PAGE — layout ───────────────────────────── */
+
+.sector-main { padding: 0; }
+
+.sector-layout {
+  display: flex;
+  gap: 2.5rem;
+  align-items: flex-start;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+}
+
+/* Video column */
+.sector-video-col { flex: 0 0 32%; }
+
+.sector-video-placeholder {
+  background: #141414;
+  aspect-ratio: 9 / 16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  color: #555;
+  font-size: 13px;
+  text-align: center;
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Right column */
+.sector-right-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-line);
+}
+
+/* Candidate sidebar */
+.sector-candidates-sidebar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 2px;
+}
+
+.sector-candidate-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  aspect-ratio: 1;
+  border-radius: 0;
+  overflow: hidden;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: block;
+  opacity: 0.55;
+  transition: opacity var(--transition);
+}
+
+.sector-candidate-btn:hover { opacity: 0.8; }
+.sector-candidate-btn.active { opacity: 1; }
+
+.sector-candidate-avatar {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sector-candidate-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.sector-candidate-initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Candidate info panel */
+.sector-candidate-info {
+  flex: 1;
+  min-width: 0;
+  padding: 1.25rem 1.5rem;
+  border-left: 4px solid transparent;
+}
+
+.sci-header { margin-bottom: 1rem; }
+
+.sci-name {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--gray-dark);
+  line-height: 1.15;
+}
+
+.sci-party {
+  font-size: 13px;
+  color: var(--gray-mid);
+  margin-top: 3px;
+}
+
+/* Chips */
+.sci-chips-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 1.25rem;
+}
+
+.chip-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.chip-dim {
+  font-family: var(--font-title);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--gray-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  border-radius: 100px;
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1.5px solid currentColor;
+  white-space: nowrap;
+}
+
+.chip-baja       { background: #fdecea; color: #b03020; }
+.chip-media-baja { background: #fef0ef; color: #c84030; }
+.chip-media      { background: #fef6e4; color: #a06010; }
+.chip-media-alta { background: #edfaf3; color: #1a7a42; }
+.chip-alta       { background: #d5f5e3; color: #145a30; }
+
+/* Chip info button & popup */
+.chip-info-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.chip-info-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid #bbb;
+  background: var(--white);
+  color: #888;
+  font-size: 11px;
+  font-style: italic;
+  font-family: Georgia, serif;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: border-color var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+
+.chip-info-btn:hover { border-color: #666; color: #444; }
+
+.chip-info-popup {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--gray-line);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  width: 260px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  z-index: 200;
+  font-family: var(--font-main);
+}
+
+.chip-info-popup p { margin: 0 0 6px; }
+.chip-info-popup p:last-child { margin-bottom: 0; }
+
+/* Subtitle & summary */
+.sci-subtitle {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--gray-dark);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.sci-summary {
+  font-size: 14px;
+  color: #444;
+  line-height: 1.7;
+  margin-bottom: 1.75rem;
+}
+
+.sci-summary p + p { margin-top: 0.85em; }
+
+.sci-footer { display: flex; justify-content: flex-end; }
+
+.sci-link {
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sci-link:hover { color: var(--blue-dark); }
+
+.sci-empty {
+  color: var(--gray-mid);
+  font-size: 14px;
+  padding: 2rem 0;
+}
+
+/* Ver otros sectores */
+#otros-sectores-section {
+  padding: 2rem 2rem 2.5rem;
+  border-top: 2px solid var(--gray-line);
+  background: #e4e4e4;
+}
+
+/* ─── SECTOR RESPONSIVE ──────────────────────────────── */
+
+@media (max-width: 860px) {
+  .sector-layout {
+    gap: 1.75rem;
+  }
+
+  .sector-video-col { flex: 0 0 32%; }
+}
+
+@media (max-width: 640px) {
+  .home-instructions { font-size: 18px; padding: 3rem 1rem 0; }
+
+  .sectores-section { padding: 1.75rem 1rem 2.5rem; }
+
+  .sectores-section-title { font-size: 18px; }
+
+  .sectores-grid { gap: 10px; }
+
+  .sector-card {
+    flex: 0 0 calc(50% - 5px);
+    max-width: none;
+    aspect-ratio: unset;
+    flex-direction: column;
+    text-align: center;
+    padding: 1.25rem 0.75rem;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sector-card-icon { width: 64px; height: 64px; }
+
+  .sector-card-icon img {
+    width: 64px;
+    height: 64px;
+    max-width: 64px;
+    max-height: 64px;
+  }
+
+  .sector-card-name { font-size: 13px; }
+
+  .sector-hero {
+    padding: 1.75rem 1rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .sector-hero h1 { font-size: 22px; text-align: center; }
+
+  .sector-hero-icon { width: 42px; height: 42px; }
+
+  .sector-layout {
+    flex-direction: column;
+    padding: 1.5rem 1rem 3rem;
+    gap: 1.5rem;
+  }
+
+  .sector-video-col {
+    flex: none;
+    width: 100%;
+  }
+
+  .sector-video-placeholder {
+    width: 100%;
+  }
+
+  .sector-right-col { width: 100%; }
+
+  .sector-candidates-sidebar { gap: 2px; }
+
+  .sci-name { font-size: 18px; }
+
+  .sci-chips-row { gap: 6px; }
+
+  .chip { font-size: 11px; padding: 4px 9px; }
+
+  .chip-info-popup { width: 230px; right: auto; left: 0; }
+
+  #otros-sectores-section { padding: 2.5rem 1rem 3rem; }
+
+  #otros-sectores-section .otros-title { font-size: 22px; }
 }
 

@@ -265,6 +265,124 @@ const Render = (() => {
   }
 
   /* ─────────────────────────────────────────
+     SECTOR CARDS — home
+  ───────────────────────────────────────── */
+
+  function sectorCards() {
+    const grid = document.getElementById('sectores-grid');
+    if (!grid) return;
+    grid.innerHTML = Object.entries(CONFIG.TEMAS)
+      .map(([nombre, cfg]) => sectorCardHTML(nombre, cfg))
+      .join('');
+  }
+
+  function sectorCardHTML(nombre, cfg) {
+    return `
+      <article class="sector-card" role="listitem" tabindex="0"
+               data-sector="${nombre}"
+               onclick="App.showSector(this.dataset.sector)"
+               onkeydown="if(event.key==='Enter'||event.key===' ')App.showSector(this.dataset.sector)"
+               aria-label="Explorar sector ${nombre}"
+               style="--sector-color:${cfg.color}">
+        <div class="sector-card-icon">${cfg.icon}</div>
+        <div class="sector-card-name">${nombre}</div>
+      </article>`;
+  }
+
+  /* ─────────────────────────────────────────
+     SECTOR PAGE
+  ───────────────────────────────────────── */
+
+  function sectorCandidateSidebar(candidatos) {
+    const sidebar = document.getElementById('sector-candidates-sidebar');
+    if (!sidebar) return;
+    sidebar.innerHTML = candidatos.map(c => {
+      const color = c.color_hex || CONFIG.COLORS.blue;
+      const photo = c.foto_url
+        ? `<img src="${c.foto_url}" alt="${c.nombre}" class="sector-candidate-img">`
+        : `<span class="sector-candidate-initials">${getIniciales(c.nombre)}</span>`;
+      return `
+        <button class="sector-candidate-btn" role="listitem"
+                data-id="${c.id}" data-color="${color}"
+                style="background:${color}"
+                onclick="App.showSectorCandidate(this.dataset.id)"
+                title="${c.nombre}" aria-label="${c.nombre}">
+          <div class="sector-candidate-avatar">${photo}</div>
+        </button>`;
+    }).join('');
+  }
+
+  function sectorCandidateInfoHTML(candidato, resumen) {
+    if (!resumen || (!resumen.subtitulo && !resumen.resumen && !resumen.precision)) {
+      return `<div class="sci-empty">Información de ${candidato.nombre} próximamente.</div>`;
+    }
+
+    const esCandidata = /paloma|claudia/i.test(candidato.nombre);
+    const linkText = esCandidata
+      ? 'Ver todas las propuestas de la candidata'
+      : 'Ver todas las propuestas del candidato';
+
+    const chip = (label, val) => {
+      if (!val) return '';
+      const cls = 'chip-' + val.toLowerCase().replace(/\s+/g, '-');
+      return `
+        <div class="chip-group">
+          <span class="chip-dim">${label}</span>
+          <span class="chip ${cls}">${val}</span>
+        </div>`;
+    };
+
+    const chips = [
+      chip('Precisión', resumen.precision),
+      chip('Factibilidad', resumen.factibilidad),
+      chip('Coherencia', resumen.coherencia),
+    ].filter(Boolean).join('');
+
+    const chipsRow = chips ? `
+      <div class="sci-chips-row">
+        ${chips}
+        <div class="chip-info-wrapper">
+          <button class="chip-info-btn"
+                  onclick="App.toggleChipInfo(this); event.stopPropagation()"
+                  aria-label="¿Qué significan estos indicadores?">i</button>
+          <div class="chip-info-popup" hidden>
+            <p><strong>Precisión:</strong> Qué tan específica y detallada es la propuesta.</p>
+            <p><strong>Factibilidad:</strong> Qué tan realizable es dada la situación fiscal, instituciional y política.</p>
+            <p><strong>Coherencia:</strong> Si es coherente con el programa general del candidato.</p>
+          </div>
+        </div>
+      </div>` : '';
+
+    const subtitulo = resumen.subtitulo
+      ? `<div class="sci-subtitle">${resumen.subtitulo}</div>` : '';
+    const resumenText = resumen.resumen
+      ? `<div class="sci-summary">${resumen.resumen.split(/\n+/).filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('')}</div>` : '';
+
+    return `
+      <div class="sci-header">
+        <div class="sci-name">${candidato.nombre}</div>
+        <div class="sci-party">${candidato.partido}</div>
+      </div>
+      ${subtitulo}
+      ${chipsRow}
+      ${resumenText}
+      <div class="sci-footer">
+        <button class="sci-link" onclick="App.showCandidato('${candidato.id}')">
+          ${linkText} →
+        </button>
+      </div>`;
+  }
+
+  function otrosSectores(currentSector) {
+    const grid = document.getElementById('otros-sectores-grid');
+    if (!grid) return;
+    grid.innerHTML = Object.entries(CONFIG.TEMAS)
+      .filter(([nombre]) => nombre !== currentSector)
+      .map(([nombre, cfg]) => sectorCardHTML(nombre, cfg))
+      .join('');
+  }
+
+  /* ─────────────────────────────────────────
      BREADCRUMB
   ───────────────────────────────────────── */
 
@@ -534,6 +652,10 @@ const Render = (() => {
     showError,
     hideError,
     compareBanner,
+    sectorCards,
+    sectorCandidateSidebar,
+    sectorCandidateInfoHTML,
+    otrosSectores,
   };
 
 })();

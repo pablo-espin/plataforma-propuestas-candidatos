@@ -24,6 +24,8 @@ const CONFIG = {
       expertos:             base + 'expertos',
       comentarios_expertos: base + 'comentarios_expertos',
       red_flags:            base + 'red_flags',
+      resumen_sectores:     base + 'resumen_sectores',
+      sectores:             base + 'sectores',
     };
   },
 

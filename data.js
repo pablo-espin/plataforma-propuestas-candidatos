@@ -13,6 +13,8 @@ const Data = (() => {
     expertos:             null,
     comentarios_expertos: null,
     red_flags:            null,
+    resumen_sectores:     null,
+    sectores:             null,
   };
 
   /**
@@ -20,7 +22,7 @@ const Data = (() => {
    * Maneja comillas, comas dentro de campos y líneas vacías.
    */
   function parseCSV(text) {
-    const lines = text.trim().split('\n');
+    const lines = splitCSVRows(text.trim());
     if (lines.length < 2) return [];
 
     // Buscar la fila de encabezados: la primera fila que contenga la columna "id"
@@ -48,6 +50,31 @@ const Data = (() => {
       })
       // Ignorar filas donde id esté vacío (filas de notas, separadores, etc.)
       .filter(obj => obj.id && obj.id !== '');
+  }
+
+  // Splits CSV text into rows, keeping newlines inside quoted fields intact.
+  function splitCSVRows(text) {
+    const rows = [];
+    let current = '';
+    let inQuotes = false;
+
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') {
+        if (inQuotes && text[i + 1] === '"') { current += '"'; i++; }
+        else { inQuotes = !inQuotes; current += ch; }
+      } else if (ch === '\r') {
+        if (!inQuotes) { if (text[i + 1] === '\n') i++; rows.push(current); current = ''; }
+        else { current += ch; }
+      } else if (ch === '\n') {
+        if (!inQuotes) { rows.push(current); current = ''; }
+        else { current += ch; }
+      } else {
+        current += ch;
+      }
+    }
+    if (current) rows.push(current);
+    return rows;
   }
 
   function parseCSVRow(line) {
@@ -95,14 +122,24 @@ const Data = (() => {
    * Carga todas las pestañas en paralelo.
    */
   async function fetchAll() {
-    const [candidatos, propuestas, expertos, comentarios, redflags] = await Promise.all([
+    const [candidatos, propuestas, expertos, comentarios, redflags, resumenes, sectores] = await Promise.all([
       fetchSheet('candidatos'),
       fetchSheet('propuestas'),
       fetchSheet('expertos'),
       fetchSheet('comentarios_expertos'),
       fetchSheet('red_flags'),
+      fetchSheet('resumen_sectores'),
+      fetchSheet('sectores'),
     ]);
-    return { candidatos, propuestas, expertos, comentarios, redflags };
+    return { candidatos, propuestas, expertos, comentarios, redflags, resumenes, sectores };
+  }
+
+  function buildSectorData(sectorNombre, { resumenes, sectores }) {
+    const filas = (resumenes || []).filter(r => r.sector === sectorNombre);
+    const porCandidato = {};
+    filas.forEach(r => { porCandidato[r.candidato_id] = r; });
+    const sectorInfo = (sectores || []).find(s => s.sector === sectorNombre) || {};
+    return { porCandidato, youtubeUrl: sectorInfo.youtube_url || '' };
   }
 
   /**
@@ -176,6 +213,7 @@ const Data = (() => {
     fetchAll,
     fetchSheet,
     buildCandidatoData,
+    buildSectorData,
     getCandidatosVisibles,
   };
 

@@ -55,10 +55,19 @@
     </header>
 
     <main>
+      <p class="home-instructions">Haga clic en un candidato para ver sus propuestas</p>
       <div class="candidates-grid" id="candidates-grid" role="list"
            aria-label="Candidatos presidenciales">
         <!-- Renderizado por render.js -->
       </div>
+
+      <section class="sectores-section" id="sectores-section" aria-label="Explorar por sector">
+        <div class="sectores-section-inner">
+          <h2 class="sectores-section-title">O explore las propuestas por sector</h2>
+          <div class="sectores-grid" id="sectores-grid" role="list"
+               aria-label="Sectores temáticos"></div>
+        </div>
+      </section>
     </main>
 
   </div>
@@ -146,6 +155,49 @@
           <div class="rf-grid" id="red-flags-grid">
             <!-- Renderizado por render.js -->
           </div>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       PAGE: SECTOR
+  ═══════════════════════════════════════════════════ -->
+  <div id="page-sector" class="page">
+
+    <div class="breadcrumb" role="navigation" aria-label="Navegación de ruta">
+      <button class="breadcrumb-link" onclick="App.goHome()">Inicio</button>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+      <span id="sector-breadcrumb-name" class="breadcrumb-current"></span>
+    </div>
+
+    <header class="sector-hero" id="sector-hero">
+      <div id="sector-hero-icon" class="sector-hero-icon" aria-hidden="true"></div>
+      <h1 id="sector-hero-title"></h1>
+    </header>
+
+    <main class="sector-main">
+      <div class="sector-layout">
+
+        <div class="sector-video-col">
+          <div class="sector-video-placeholder" id="sector-video">
+            <span>Video disponible próximamente</span>
+          </div>
+        </div>
+
+        <div class="sector-right-col">
+          <div class="sector-candidates-sidebar" id="sector-candidates-sidebar"
+               role="list" aria-label="Candidatos"></div>
+          <div class="sector-candidate-info" id="sector-candidate-info"></div>
+        </div>
+
+      </div>
+
+      <section id="otros-sectores-section" aria-label="Ver otros sectores">
+        <div class="otros-inner">
+          <h2 class="otros-title">Ver otros sectores</h2>
+          <div id="otros-sectores-grid" class="sectores-grid"></div>
         </div>
       </section>
     </main>

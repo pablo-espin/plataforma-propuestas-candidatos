@@ -15,6 +15,9 @@ const App = (() => {
     propuestaMap: {},
     activeSubtemas: new Set(),
     activeAlerts:   new Set(),
+    currentSector:            null,
+    sectorData:               null,
+    currentSectorCandidatoId: null,
   };
 
   /* ─────────────────────────────────────────
@@ -69,6 +72,7 @@ const App = (() => {
       }
 
       Render.home(state.candidatos);
+      Render.sectorCards();
       setupHomeEvents();
       setupModalEvents();
       setupKeyboard();
@@ -92,6 +96,9 @@ const App = (() => {
     state.propuestaMap = {};
     state.activeSubtemas.clear();
     state.activeAlerts.clear();
+    state.currentSector = null;
+    state.sectorData = null;
+    state.currentSectorCandidatoId = null;
 
     showPage('page-home');
     Render.compareBanner(null, null);
@@ -174,6 +181,73 @@ const App = (() => {
     document.getElementById('clear-compare-btn').style.display = 'none';
     setupProposalEvents();
     refreshFilters();
+  }
+
+  /* ─────────────────────────────────────────
+     SECTORES
+  ───────────────────────────────────────── */
+
+  async function showSector(sectorNombre) {
+    state.currentSector = sectorNombre;
+    const sectorData = Data.buildSectorData(sectorNombre, state.allData);
+    state.sectorData = sectorData;
+    const cfg = CONFIG.TEMAS[sectorNombre] || {};
+
+    document.getElementById('sector-breadcrumb-name').textContent = sectorNombre;
+
+    const hero = document.getElementById('sector-hero');
+    hero.style.setProperty('--sector-color', cfg.color || '#ccc');
+    document.getElementById('sector-hero-icon').innerHTML = cfg.icon || '';
+    document.getElementById('sector-hero-title').textContent = `Propuestas en ${sectorNombre}`;
+
+    const videoEl = document.getElementById('sector-video');
+    if (sectorData.youtubeUrl) {
+      const videoId = extractYouTubeId(sectorData.youtubeUrl);
+      videoEl.innerHTML = videoId
+        ? `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0"
+                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                   allowfullscreen style="width:100%;height:100%;border-radius:12px"></iframe>`
+        : '<span>Video disponible próximamente</span>';
+    } else {
+      videoEl.innerHTML = '<span>Video disponible próximamente</span>';
+    }
+
+    Render.sectorCandidateSidebar(state.candidatos);
+    Render.otrosSectores(sectorNombre);
+
+    if (state.candidatos.length > 0) {
+      showSectorCandidate(state.candidatos[0].id);
+    }
+
+    showPage('page-sector');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showSectorCandidate(candidatoId) {
+    state.currentSectorCandidatoId = candidatoId;
+    const candidato = state.candidatos.find(c => c.id === candidatoId);
+    if (!candidato) return;
+
+    document.querySelectorAll('.sector-candidate-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.id === candidatoId);
+    });
+
+    const resumen = state.sectorData ? state.sectorData.porCandidato[candidatoId] : null;
+    const infoEl = document.getElementById('sector-candidate-info');
+    infoEl.innerHTML = Render.sectorCandidateInfoHTML(candidato, resumen);
+    infoEl.style.borderLeftColor = candidato.color_hex || CONFIG.COLORS.blue;
+  }
+
+  function toggleChipInfo(btn) {
+    const popup = btn.nextElementSibling;
+    const isHidden = popup.hasAttribute('hidden');
+    document.querySelectorAll('.chip-info-popup').forEach(p => p.setAttribute('hidden', ''));
+    if (isHidden) popup.removeAttribute('hidden');
+  }
+
+  function extractYouTubeId(url) {
+    const m = url.match(/(?:youtu\.be\/|[?&]v=|\/shorts\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : null;
   }
 
   /* ─────────────────────────────────────────
@@ -332,6 +406,12 @@ const App = (() => {
     document.addEventListener('keydown', e => {
       if (e.key === 'Escape') Render.closeModal();
     });
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.chip-info-popup:not([hidden])').forEach(p => {
+        p.setAttribute('hidden', '');
+      });
+    });
   }
 
   /* ─────────────────────────────────────────
@@ -360,6 +440,9 @@ const App = (() => {
     showMetodologia,
     doCompare,
     clearCompare,
+    showSector,
+    showSectorCandidate,
+    toggleChipInfo,
   };
 
 })();
