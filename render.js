@@ -334,7 +334,7 @@ const Render = (() => {
 
     const chips = [
       chip('Precisión', resumen.precision),
-      chip('Factibilidad', resumen.factibilidad),
+      chip('Viabilidad', resumen.viabilidad),
       chip('Coherencia', resumen.coherencia),
     ].filter(Boolean).join('');
 
@@ -347,7 +347,7 @@ const Render = (() => {
                   aria-label="¿Qué significan estos indicadores?">i</button>
           <div class="chip-info-popup" hidden>
             <p><strong>Precisión:</strong> Qué tan específica y detallada es la propuesta.</p>
-            <p><strong>Factibilidad:</strong> Qué tan realizable es dada la situación fiscal, instituciional y política.</p>
+            <p><strong>Viabilidad:</strong> Qué tan realizable es dada la situación fiscal, institucional y política.</p>
             <p><strong>Coherencia:</strong> Si es coherente con el programa general del candidato.</p>
           </div>
         </div>
@@ -433,13 +433,9 @@ const Render = (() => {
 
   function redFlags(flags) {
     const section = document.getElementById('red-flags-section');
+    section.style.display = 'none';
 
-    if (!flags || flags.length === 0) {
-      section.style.display = 'none';
-      return;
-    }
-
-    section.style.display = 'block';
+    if (!flags || flags.length === 0) return;
     document.getElementById('red-flags-grid').innerHTML = flags.map(rf => `
       <div class="rf-card">
         <div class="rf-video-thumb" data-url="${rf.url_video || ''}">
@@ -633,6 +629,22 @@ const Render = (() => {
     });
   }
 
+  function footer(candidatos) {
+    const candidatesList = document.getElementById('footer-candidates-list');
+    if (candidatesList) {
+      candidatesList.innerHTML = candidatos.map(c =>
+        `<li><button onclick="App.showCandidato('${c.id}')">${c.nombre}</button></li>`
+      ).join('');
+    }
+
+    const sectorsList = document.getElementById('footer-sectors-list');
+    if (sectorsList) {
+      sectorsList.innerHTML = Object.keys(CONFIG.TEMAS).map(nombre =>
+        `<li><button onclick="App.showSector('${nombre}')">${nombre}</button></li>`
+      ).join('');
+    }
+  }
+
   // API pública
   return {
     home,
@@ -656,6 +668,7 @@ const Render = (() => {
     sectorCandidateSidebar,
     sectorCandidateInfoHTML,
     otrosSectores,
+    footer,
   };
 
 })();

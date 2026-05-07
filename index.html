@@ -32,7 +32,6 @@
     </button>
 
     <div class="nav-right">
-      <button class="nav-link" onclick="App.goHome()">Candidatos</button>
       <button class="nav-link" onclick="App.showMetodologia()">Metodología</button>
     </div>
   </nav>
@@ -49,7 +48,7 @@
       <div class="dot-grid" id="dot-grid" aria-hidden="true"></div>
       <div class="home-header-content">
         <div class="year-badge">Elecciones 2026</div>
-        <h1>Propuestas de los<br>cinco candidatos punteros</h1>
+        <h1>Las propuestas de los candidatos<br>y las alertas identificadas por expertos</h1>
         <p>Analice y compare sus programas en cinco temas clave comentados por expertos. Le mostramos las propuestas que amenazan el Estado de Derecho y la democracia liberal.</p>
       </div>
     </header>
@@ -233,6 +232,51 @@
       <p>Contenido próximamente.</p>
     </main>
   </div>
+
+  <!-- ── FOOTER ───────────────────────────────────────── -->
+  <footer id="site-footer">
+    <div class="footer-inner">
+
+      <!-- Col 1: Brand -->
+      <div class="footer-col footer-col-brand">
+        <a href="https://fedecolombia.org/" target="_blank" rel="noopener" class="footer-logo-link">
+          <img src="img/logo-fede-hz-blanco.svg" alt="Fundación para el Estado de Derecho" class="footer-logo">
+        </a>
+        <p class="footer-tagline">Este es un proyecto de la Fundación para el Estado de Derecho.</p>
+        <p class="footer-desc">Esta herramienta es informativa y no influye en la intención de voto de la ciudadanía. La Fundación para el Estado de Derecho es una organización no gubernamental, sin ánimo de lucro y sin filiación política.</p>
+        <div class="footer-social">
+          <a href="https://x.com/fede_colombia_" target="_blank" rel="noopener" aria-label="X (Twitter)">
+            <img src="img/x-logo.svg" alt="X">
+          </a>
+          <a href="https://www.instagram.com/fedecolombiaoficial/" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="img/Instagram-logo.svg" alt="Instagram">
+          </a>
+          <a href="https://www.tiktok.com/@fedecolombiaoficial" target="_blank" rel="noopener" aria-label="TikTok">
+            <img src="img/tiktok-logo.svg" alt="TikTok">
+          </a>
+          <a href="https://www.linkedin.com/company/fede-colombia/posts/?feedView=all" target="_blank" rel="noopener" aria-label="LinkedIn">
+            <img src="img/linkedin-logo.svg" alt="LinkedIn">
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Candidatos -->
+      <div class="footer-col footer-col-nav">
+        <h3 class="footer-col-title">Candidatos</h3>
+        <ul id="footer-candidates-list" class="footer-links"></ul>
+      </div>
+
+      <!-- Col 3: Sectores -->
+      <div class="footer-col footer-col-nav">
+        <h3 class="footer-col-title">Sectores</h3>
+        <ul id="footer-sectors-list" class="footer-links"></ul>
+      </div>
+
+    </div>
+    <div class="footer-bottom">
+      <p>¿Alguna pregunta? Escríbanos a <a href="mailto:ideas@fedecolombia.org">ideas@fedecolombia.org</a></p>
+    </div>
+  </footer>
 
   <!-- ── SCRIPTS ────────────────────────────────────── -->
   <!--

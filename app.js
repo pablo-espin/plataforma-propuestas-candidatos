@@ -73,6 +73,7 @@ const App = (() => {
 
       Render.home(state.candidatos);
       Render.sectorCards();
+      Render.footer(state.candidatos);
       setupHomeEvents();
       setupModalEvents();
       setupKeyboard();
