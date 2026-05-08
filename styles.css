@@ -1962,7 +1962,7 @@ nav {
 
 /* Chips */
 .sci-chips-row {
-  display: flex;
+  display: none;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 20px;
