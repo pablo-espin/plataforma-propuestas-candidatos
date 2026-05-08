@@ -112,19 +112,10 @@ button {
 }
 
 .loading-logo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  width: 56px;
-  height: 56px;
-  gap: 4px;
+  width: 80px;
+  height: auto;
   animation: pulse 1.4s ease-in-out infinite;
 }
-
-.loading-logo div { border-radius: 4px; }
-.loading-logo .lm1 { background: var(--yellow); }
-.loading-logo .lm2 { background: rgba(255,255,255,0.9); }
-.loading-logo .lm3 { background: rgba(255,255,255,0.3); border-radius: 4px 4px 4px 50%; }
-.loading-logo .lm4 { background: var(--orange); }
 
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -801,8 +792,10 @@ nav {
 
 #compare-banner {
   display: none;
-  background: var(--orange);
-  color: white;
+  background: var(--blue-light);
+  color: var(--gray-dark);
+  border-bottom: 1px solid var(--blue-dark);
+  border-top: 1px solid var(--blue-dark);
   text-align: center;
   padding: 10px 1rem;
   font-size: 13px;
