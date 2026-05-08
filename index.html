@@ -26,8 +26,8 @@
     <button class="nav-logo" onclick="App.goHome()" aria-label="Inicio — Semáforo de la Campaña">
       <img src="img/logo-fede.svg" alt="" aria-hidden="true" class="nav-logo-img">
       <div class="nav-wordmark">
-        <div class="nav-title">Plataforma del Estado de Derecho</div>
-        <div class="nav-subtitle">Elecciones 2026</div>
+        <div class="nav-title">Propuestas de los candidatos</div>
+        <div class="nav-subtitle">Comentadas por expertos</div>
       </div>
     </button>
 
@@ -223,13 +223,87 @@
        PAGE: METODOLOGÍA
   ═══════════════════════════════════════════════════ -->
   <div id="page-metodologia" class="page">
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb" role="navigation" aria-label="Navegación de ruta">
+      <button class="breadcrumb-link" onclick="App.goHome()">Inicio</button>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+      <span class="breadcrumb-current">Metodología</span>
+    </div>
+
     <header class="metodologia-header">
-      <div class="year-badge">FEDe 2026</div>
       <h1>Metodología</h1>
-      <p>Cómo analizamos y evaluamos las propuestas de los candidatos presidenciales.</p>
     </header>
+
     <main class="metodologia-body">
-      <p>Contenido próximamente.</p>
+
+      <p>Esta plataforma reúne información sobre las propuestas de los cinco candidatos punteros en cinco sectores clave para el siguiente gobierno. El objetivo es sistematizar y centralizar las propuestas para que sean más fáciles de leer y analizar. Además, hacemos una calificación de nivel de riesgo institucional y para el Estado de Derecho fundamentado en los criterios y principios de la Fundación, disponibles <a href="https://fedecolombia.org/quienes-somos/" class="metod-link">aquí</a>. La Fundación es una organización no gubernamental, sin ánimo de lucro y sin filiación política. Con esta herramienta buscamos aportar al debate público para que la ciudadanía cuente con información verificada y comentada por expertos para tomar decisiones informadas.</p>
+
+      <h2>Fuentes de información</h2>
+      <p>La fuente principal de información son los programas oficiales de gobierno publicados por las campañas de los candidatos. En el caso de Abelardo de la Espriella se revisaron también entrevistas y publicaciones en redes sociales, pues el candidato no había publicado su programa al momento de iniciar esta revisión. En el caso de Sergio Fajardo también consultamos los programas detallados publicados en su página para los diferentes sectores. Puede consultar los programas de gobierno que usamos <a href="https://drive.google.com/file/d/18aESZg7cD93h6tv2YZECciY9IxJ3zP41/view?usp=sharing" class="metod-link">aquí</a>.</p>
+
+      <h2>Edición de las propuestas</h2>
+      <p>Las propuestas son reproducidas con ediciones mínimas en algunos casos para mayor claridad o para sintetizar. Cuando las propuestas no provienen de los programas, las redactamos reproduciendo las palabras de los candidatos en sus entrevistas o publicaciones de redes sociales.</p>
+
+      <h2>Selección de sectores</h2>
+      <p>Los sectores priorizados para el análisis (seguridad, institucional, tierras y agro, energía y salud) se basan en las líneas de litigio estratégico que prioriza la Fundación. Más que hacer un barrido por todas las propuestas de los candidatos en todos los temas, buscamos dar información detallada y de alta calidad sobre las áreas de experticia de la Fundación.</p>
+
+      <h2>Comentarios de expertos</h2>
+      <p>Varias propuestas fueron comentadas por expertos en cada uno de los temas. Estas fueron reproducidas con ediciones mínimas para claridad y síntesis.</p>
+      <p>El panel de expertos se compone de:</p>
+
+      <div class="metod-experts">
+        <div class="metod-expert-sector">
+          <h3><img src="img/icon-seguridad.svg" class="metod-sector-icon" aria-hidden="true">Seguridad</h3>
+          <ul>
+            <li><strong>Santiago Tobón</strong> — Director del Centro de Valor Público, Universidad EAFIT</li>
+            <li><strong>Javier Flórez</strong> — Director del área de conflicto y seguridad, Fundación Ideas para la Paz</li>
+          </ul>
+        </div>
+        <div class="metod-expert-sector">
+          <h3><img src="img/icon-salud.svg" class="metod-sector-icon" aria-hidden="true">Salud</h3>
+          <ul>
+            <li><strong>Augusto Galán</strong> — Director de Así Vamos en Salud</li>
+            <li><strong>Ana María Vesga</strong> — Presidente ejecutiva de Acemi</li>
+          </ul>
+        </div>
+        <div class="metod-expert-sector">
+          <h3><img src="img/icon-energia.svg" class="metod-sector-icon" aria-hidden="true">Energía</h3>
+          <ul>
+            <li><strong>Milton Montoya</strong> — Director del Departamento de Derecho Minero-Energético de la Universidad Externado</li>
+            <li><strong>Javier Lastra</strong> — Abogado y analista del sector energético</li>
+          </ul>
+        </div>
+        <div class="metod-expert-sector">
+          <h3><img src="img/icon-tierras.svg" class="metod-sector-icon" aria-hidden="true">Tierras y agro</h3>
+          <ul>
+            <li><strong>Felipe Clavijo</strong> — Abogado constitucionalista y especialista en tierras</li>
+            <li><strong>Andrés Bodensiek</strong> — Máster en economía agroalimentaria y ambiental de la Universidad Sueca de Ciencias Agrícolas y la Universidad de Bonn. Especialista en Derecho de Tierras de la Universidad Externado</li>
+          </ul>
+        </div>
+        <div class="metod-expert-sector">
+          <h3><img src="img/icon-institucional.svg" class="metod-sector-icon" aria-hidden="true">Institucional</h3>
+          <ul>
+            <li>Abogados e investigadores de la Fundación</li>
+          </ul>
+        </div>
+      </div>
+
+      <h2>Definición del nivel de riesgo de las propuestas</h2>
+      <p>Algunas propuestas están marcadas con "Alerta" o "Amenaza" para la institucionalidad y el Estado de Derecho. Esta marcación se basa en la metodología del semáforo del Estado de Derecho desarrollado por la Fundación.</p>
+      <p>Una propuesta está marcada con <span class="chip-alerta">Alerta</span> cuando implica una posible inconveniencia, inconstitucionalidad o ilegalidad. Consideramos inconvenientes las propuestas que, aunque válidas en el marco institucional vigente, son perjudiciales por sus consecuencias económicas, sociales o culturales.</p>
+      <p>Una propuesta está marcada como <span class="chip-amenaza">Amenaza</span> cuando implica una amenaza real o altamente probable para el Estado de Derecho, como sustitución de la Constitución o propuestas contrarias a los principios del Estado de Derecho.</p>
+
+      <h2>Resúmenes sectoriales</h2>
+      <p>Los resúmenes por sector se basan en el contenido de los programas de gobierno de los candidatos y en los comentarios de los expertos al respecto.</p>
+      <p>Cada resumen viene acompañado de una clasificación cualitativa en términos de <strong>precisión</strong>, que denota qué tan específica y detallada es la propuesta, <strong>viabilidad</strong>, que considera qué tan realizable es dada la situación fiscal, política e institucional del país, y <strong>coherencia</strong>, que califica si la propuesta es coherente en relación con el resto del programa del candidato.</p>
+
+      <h2>Uso de inteligencia artificial</h2>
+      <p>La lista de propuestas fue extraída manualmente de los programas de los candidatos. Usamos una herramienta de inteligencia artificial para verificar que las propuestas extraídas manualmente correspondieran con lo que se encuentra en los programas. También usamos inteligencia artificial para hacer un resumen conciso de las propuestas por sector y los comentarios de los expertos.</p>
+
+      <h2>Preguntas y reporte de errores</h2>
+      <p>Si tiene alguna pregunta o si encuentra información incorrecta o desactualizada, puede reportarla a <a href="mailto:ideas@fedecolombia.org" class="metod-link">ideas@fedecolombia.org</a>.</p>
+
     </main>
   </div>
 
