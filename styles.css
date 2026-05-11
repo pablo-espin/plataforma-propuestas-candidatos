@@ -1368,7 +1368,7 @@ nav {
   position: absolute;
   left: 100%;
   top: 0;
-  width: 240px;
+  width: clamp(240px, calc((100vw - 1100px) / 2 - 16px), 400px);
   margin-left: 16px;
   flex-direction: column;
   gap: 8px;
@@ -1485,6 +1485,8 @@ nav {
   margin: 0;
   padding: 0;
   border: none;
+  max-height: 260px;
+  overflow-y: auto;
 }
 
 /* ─── EMPTY STATE ────────────────────────────────────────── */
