@@ -629,6 +629,53 @@ const Render = (() => {
     });
   }
 
+  /* ─────────────────────────────────────────
+     EXPERTOS PANEL — perfil del candidato
+  ───────────────────────────────────────── */
+
+  function expertosPanel(candidatoData) {
+    const panel = document.getElementById('expertos-panel');
+    const list  = document.getElementById('expertos-panel-list');
+    if (!panel || !list) return;
+
+    // Collect unique experts across all proposals for this candidate
+    const seen = new Set();
+    const experts = [];
+    Object.values(candidatoData.porTema).forEach(propuestas => {
+      propuestas.forEach(p => {
+        p.experts.forEach(exp => {
+          if (!seen.has(exp.nombre)) {
+            seen.add(exp.nombre);
+            experts.push(exp);
+          }
+        });
+      });
+    });
+
+    if (experts.length === 0) {
+      panel.hidden = true;
+      return;
+    }
+
+    list.innerHTML = experts.map(exp => {
+      const iniciales = getIniciales(exp.nombre);
+      return `
+        <div class="ep-expert">
+          <div class="ep-avatar" style="background:${exp.color}" aria-hidden="true">${iniciales}</div>
+          <div class="ep-info">
+            <div class="ep-name">${exp.nombre}</div>
+            <div class="ep-role">${exp.rol}</div>
+          </div>
+          <div class="ep-tooltip" hidden>
+            <div class="ep-tooltip-name">${exp.nombre}</div>
+            <div class="ep-tooltip-role">${exp.rol}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    panel.hidden = false;
+  }
+
   function footer(candidatos) {
     const candidatesList = document.getElementById('footer-candidates-list');
     if (candidatesList) {
@@ -668,6 +715,7 @@ const Render = (() => {
     sectorCandidateSidebar,
     sectorCandidateInfoHTML,
     otrosSectores,
+    expertosPanel,
     footer,
   };
 

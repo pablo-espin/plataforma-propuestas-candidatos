@@ -121,6 +121,7 @@ const App = (() => {
     Render.breadcrumb(candidato);
     Render.perfilHeader(candidato);
     Render.compareSelect(state.candidatos, id);
+    Render.expertosPanel(candidatoData);
     Render.propuestas(
       candidatoData, candidato.nombre, candidato.color_hex,
       null, null, null
@@ -136,6 +137,7 @@ const App = (() => {
 
     // Event listeners de propuestas (alertas y expertos)
     setupProposalEvents();
+    setupExpertsPanelEvents();
     refreshFilters();
   }
 
@@ -278,6 +280,37 @@ const App = (() => {
         const card = e.target.closest('.candidate-card');
         if (card) showCandidato(card.dataset.id);
       }
+    });
+  }
+
+  function setupExpertsPanelEvents() {
+    const list = document.getElementById('expertos-panel-list');
+    if (!list) return;
+
+    // Close any open tooltip when clicking outside
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.ep-expert')) {
+        list.querySelectorAll('.ep-expert.tooltip-open').forEach(el => {
+          el.classList.remove('tooltip-open');
+          el.querySelector('.ep-tooltip').hidden = true;
+        });
+      }
+    }, { capture: true, once: false });
+
+    list.querySelectorAll('.ep-expert').forEach(el => {
+      el.querySelector('.ep-avatar').addEventListener('click', e => {
+        e.stopPropagation();
+        const isOpen = el.classList.contains('tooltip-open');
+        // Close all
+        list.querySelectorAll('.ep-expert.tooltip-open').forEach(other => {
+          other.classList.remove('tooltip-open');
+          other.querySelector('.ep-tooltip').hidden = true;
+        });
+        if (!isOpen) {
+          el.classList.add('tooltip-open');
+          el.querySelector('.ep-tooltip').hidden = false;
+        }
+      });
     });
   }
 
