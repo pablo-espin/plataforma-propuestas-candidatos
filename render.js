@@ -163,7 +163,7 @@ const Render = (() => {
   }
 
   function renderPropuesta(p) {
-    const showAlertaBtn = p.alerta && p.alerta.mostrarBtn;
+    const showAlertaBtn = !!(p.alerta && p.alerta.explicacion);
     const alertaBtn = showAlertaBtn ? renderAlertaBtn(p.alerta, p.id) : '';
     const expertBtns = p.experts && p.experts.length > 0
       ? p.experts.map((exp, i) => renderExpertBtn(exp, p.id, i)).join('')
@@ -206,10 +206,10 @@ const Render = (() => {
   }
 
   function renderAlertaBtn(alerta, propuestaId) {
-    const cfg = CONFIG.SEMAFORO[alerta.nivel] || CONFIG.SEMAFORO.amarillo;
+    const cfg = CONFIG.SEMAFORO[alerta.nivelBurbuja] || CONFIG.SEMAFORO.accion;
     const bubbleId = `alc-${propuestaId}`;
     return `
-      <button class="alerta-btn semaforo-${alerta.nivel}"
+      <button class="alerta-btn semaforo-${alerta.nivelBurbuja}"
               data-propuesta-id="${propuestaId}"
               data-type="alerta"
               data-comment-id="${bubbleId}"
@@ -220,15 +220,15 @@ const Render = (() => {
   }
 
   function renderAlertaBubble(alerta, propuestaId) {
-    const cfg = CONFIG.SEMAFORO[alerta.nivel] || CONFIG.SEMAFORO.amarillo;
+    const cfg = CONFIG.SEMAFORO[alerta.nivelBurbuja] || CONFIG.SEMAFORO.accion;
     const bubbleId = `alc-${propuestaId}`;
     return `
-      <div class="alerta-comment-bubble semaforo-${alerta.nivel}" id="${bubbleId}" hidden>
+      <div class="alerta-comment-bubble semaforo-${alerta.nivelBurbuja}" id="${bubbleId}" hidden>
         <div class="acb-header">
           <span class="acb-label">${cfg.label}</span>
           <button class="ecb-close" data-comment-id="${bubbleId}" aria-label="Cerrar">×</button>
         </div>
-        <p class="ecb-text">${alerta.explicacion}</p>
+        <p class="ecb-text">${parseLinks(alerta.explicacion)}</p>
       </div>`;
   }
 
@@ -462,13 +462,13 @@ const Render = (() => {
   ───────────────────────────────────────── */
 
   function modalAlerta(alerta) {
-    const cfg = CONFIG.SEMAFORO[alerta.nivel] || CONFIG.SEMAFORO.amarillo;
+    const cfg = CONFIG.SEMAFORO[alerta.nivelBurbuja] || CONFIG.SEMAFORO.accion;
     document.getElementById('modal-icon').textContent = cfg.icon;
     document.getElementById('modal-icon').style.color = cfg.color;
     document.getElementById('modal-title').textContent = cfg.label + ' — Estado de Derecho';
     document.getElementById('modal-title').style.color = cfg.color;
     document.getElementById('modal-body-content').innerHTML = `
-      <p class="modal-text">${alerta.explicacion}</p>`;
+      <p class="modal-text">${parseLinks(alerta.explicacion)}</p>`;
     document.getElementById('modal-footer').innerHTML = '';
     openModal();
   }
@@ -538,6 +538,11 @@ const Render = (() => {
      HELPERS
   ───────────────────────────────────────── */
 
+  function parseLinks(text) {
+    return text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  }
+
   function getIniciales(nombre) {
     return nombre.split(' ')
       .filter(w => w.length > 2)
@@ -588,11 +593,13 @@ const Render = (() => {
         </div>
       </div>` : '';
 
-    const alertsGroup = alertLevels.length > 0 ? `
+    const visibleAlertLevels = alertLevels.filter(l => l !== 'accion');
+
+    const alertsGroup = visibleAlertLevels.length > 0 ? `
       <div class="filter-group">
         <span class="filter-label">Nivel de riesgo</span>
         <div class="filter-tags">
-          ${alertLevels.map(level => `
+          ${visibleAlertLevels.map(level => `
             <button class="filter-tag filter-alert-${level}${activeAlerts.has(level) ? ' active' : ''}"
                     data-filter-type="alert" data-value="${level}">${alertLabels[level] || level}</button>
           `).join('')}

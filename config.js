@@ -40,8 +40,9 @@ const CONFIG = {
 
   // Colores del semáforo
   SEMAFORO: {
-    amarillo: { color: '#f39c12', bg: '#fef9e7', label: 'Alerta',  icon: '<img src="img/logo-fede.svg" alt="FEDe">' },
-    rojo:     { color: '#e74c3c', bg: '#fdecea', label: 'Amenaza', icon: '<img src="img/logo-fede.svg" alt="FEDe">' },
+    amarillo: { color: '#f39c12', bg: '#fef9e7', label: 'Alerta',                    icon: '<img src="img/logo-fede.svg" alt="FEDe">' },
+    rojo:     { color: '#e74c3c', bg: '#fdecea', label: 'Amenaza',                   icon: '<img src="img/logo-fede.svg" alt="FEDe">' },
+    accion:   { color: '#2F6FCC', bg: '#eef4fc', label: 'Acción de la Fundación',    icon: '<img src="img/logo-fede.svg" alt="FEDe">' },
   },
 
   // Paleta de FEDe

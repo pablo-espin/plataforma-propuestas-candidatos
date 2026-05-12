@@ -173,11 +173,11 @@ const Data = (() => {
         }, []);
 
       // Construir objeto de alerta
-      const tieneAlerta = p.alerta_estado_derecho.toLowerCase() === 'si';
+      const tieneAlerta = !!p.semaforo || !!p.alerta_explicacion;
       const alerta = tieneAlerta ? {
-        nivel:       p.semaforo, // 'amarillo' o 'rojo'
-        explicacion: p.alerta_explicacion,
-        mostrarBtn:  (p.mostrar_alerta_btn || '').toLowerCase() !== 'no',
+        nivel:        p.semaforo || 'accion',         // controla el indicador de fila y los filtros
+        nivelBurbuja: p.semaforo_burbuja || 'accion', // controla la burbuja y el modal
+        explicacion:  p.alerta_explicacion,
       } : null;
 
       porTema[p.tema].push({
