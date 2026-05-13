@@ -209,7 +209,7 @@ const App = (() => {
       videoEl.innerHTML = videoId
         ? `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0"
                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                   allowfullscreen style="width:100%;height:100%;border-radius:12px"></iframe>`
+                   allowfullscreen style="width:100%;height:100%;display:block;border:none"></iframe>`
         : '<span>Video disponible próximamente</span>';
     } else {
       videoEl.innerHTML = '<span>Video disponible próximamente</span>';
