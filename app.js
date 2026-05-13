@@ -308,7 +308,12 @@ const App = (() => {
         });
         if (!isOpen) {
           el.classList.add('tooltip-open');
-          el.querySelector('.ep-tooltip').hidden = false;
+          const tip = el.querySelector('.ep-tooltip');
+          tip.style.left = '';
+          tip.hidden = false;
+          const viewportWidth = document.documentElement.clientWidth;
+          const overflow = tip.getBoundingClientRect().right - viewportWidth + 8;
+          if (overflow > 0) tip.style.left = `-${overflow}px`;
         }
       });
     });
