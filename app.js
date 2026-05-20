@@ -191,6 +191,8 @@ const App = (() => {
   ───────────────────────────────────────── */
 
   async function showSector(sectorNombre) {
+    const temaCfg = CONFIG.TEMAS[sectorNombre];
+    if (temaCfg && temaCfg.hidden) return;
     state.currentSector = sectorNombre;
     const sectorData = Data.buildSectorData(sectorNombre, state.allData);
     state.sectorData = sectorData;

@@ -272,6 +272,7 @@ const Render = (() => {
     const grid = document.getElementById('sectores-grid');
     if (!grid) return;
     grid.innerHTML = Object.entries(CONFIG.TEMAS)
+      .filter(([, cfg]) => !cfg.hidden)
       .map(([nombre, cfg]) => sectorCardHTML(nombre, cfg))
       .join('');
   }
@@ -377,7 +378,7 @@ const Render = (() => {
     const grid = document.getElementById('otros-sectores-grid');
     if (!grid) return;
     grid.innerHTML = Object.entries(CONFIG.TEMAS)
-      .filter(([nombre]) => nombre !== currentSector)
+      .filter(([nombre, cfg]) => nombre !== currentSector && !cfg.hidden)
       .map(([nombre, cfg]) => sectorCardHTML(nombre, cfg))
       .join('');
   }
@@ -693,9 +694,10 @@ const Render = (() => {
 
     const sectorsList = document.getElementById('footer-sectors-list');
     if (sectorsList) {
-      sectorsList.innerHTML = Object.keys(CONFIG.TEMAS).map(nombre =>
-        `<li><button onclick="App.showSector('${nombre}')">${nombre}</button></li>`
-      ).join('');
+      sectorsList.innerHTML = Object.entries(CONFIG.TEMAS)
+        .filter(([, cfg]) => !cfg.hidden)
+        .map(([nombre]) => `<li><button onclick="App.showSector('${nombre}')">${nombre}</button></li>`)
+        .join('');
     }
   }
 

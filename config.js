@@ -32,7 +32,7 @@ const CONFIG = {
   // Temas válidos y sus íconos/colores
   TEMAS: {
     'Seguridad':       { icon: '<img src="img/icon-seguridad.svg" alt="">', color: '#e74c3c' },
-    'Institucional':   { icon: '<img src="img/icon-institucional.svg" alt="">', color: '#2F6FCC' },
+    'Institucional':   { icon: '<img src="img/icon-institucional.svg" alt="">', color: '#2F6FCC', hidden: true },
     'Tierras y Agro':  { icon: '<img src="img/icon-tierras.svg" alt="">', color: '#27ae60' },
     'Energía':         { icon: '<img src="img/icon-energia.svg" alt="">', color: '#f39c12' },
     'Salud':           { icon: '<img src="img/icon-salud.svg" alt="">', color: '#8e44ad' },
