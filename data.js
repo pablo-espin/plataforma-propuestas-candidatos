@@ -1,6 +1,6 @@
 /**
  * data.js
- * Maneja la carga y el parseo de datos desde Google Sheets.
+ * Maneja datos desde Google Sheets.
  * Todos los datos se cachean en memoria para evitar requests repetidos.
  */
 
@@ -158,7 +158,7 @@ const Data = (() => {
     misPropuestas.forEach(p => {
       if (!porTema[p.tema]) porTema[p.tema] = [];
 
-      // Buscar comentarios de expertos (puede haber más de uno por propuesta)
+      // Buscar comentarios de expertos
       const experts = comentarios
         .filter(c => c.propuesta_id === p.id)
         .reduce((acc, c) => {

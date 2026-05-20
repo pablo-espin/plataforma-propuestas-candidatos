@@ -72,7 +72,6 @@
       <p class="home-instructions">Haga clic en un candidato para ver sus propuestas</p>
       <div class="candidates-grid" id="candidates-grid" role="list"
            aria-label="Candidatos presidenciales">
-        <!-- Renderizado por render.js -->
       </div>
 
       <section class="sectores-section" id="sectores-section" aria-label="Explorar por sector">
@@ -152,7 +151,6 @@
         <div id="filter-bar" class="filter-bar"></div>
         <span class="proposals-section-label">Propuestas</span>
         <div class="proposals-container" id="proposals-container">
-          <!-- Renderizado por render.js -->
         </div>
       </div>
 
@@ -175,7 +173,6 @@
             </div>
           </div>
           <div class="rf-grid" id="red-flags-grid">
-            <!-- Renderizado por render.js -->
           </div>
         </div>
       </section>
@@ -379,13 +376,7 @@
   </footer>
 
   <!-- ── SCRIPTS ────────────────────────────────────── -->
-  <!--
-    ORDEN IMPORTANTE — no cambiar:
-    1. config.js  → constantes globales (CONFIG)
-    2. data.js    → lógica de fetch (Data)
-    3. render.js  → lógica de DOM (Render)
-    4. app.js     → navegación y eventos (App)
-  -->
+  <!-- no cambiar orden -->
   <script src="config.js"></script>
   <script src="data.js"></script>
   <script src="render.js"></script>

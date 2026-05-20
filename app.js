@@ -1,7 +1,5 @@
 /**
  * app.js
- * Lógica de navegación, estado de la app y event handlers.
- * Es el punto de entrada principal — se carga de último.
  */
 
 const App = (() => {

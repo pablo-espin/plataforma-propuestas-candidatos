@@ -1,21 +1,12 @@
 /**
  * config.js
  * Configura la URL del Google Sheet y las constantes globales.
- *
- * INSTRUCCIONES PARA CONECTAR TU GOOGLE SHEET:
- * 1. Abre tu Google Sheet
- * 2. Ve a Archivo → Compartir → Publicar en la web
- * 3. En "Enlace", selecciona cada pestaña y formato CSV
- * 4. Copia la URL base y pégala en SHEETS_BASE_URL
- * 5. El ID de la hoja está en la URL de tu Sheet:
- *    https://docs.google.com/spreadsheets/d/[SHEET_ID]/edit
- * https://docs.google.com/spreadsheets/d/e/2PACX-1vTUy0-5IogpTvOjqqfSdwHrwMvTU4WL6URPXTuRvPetPqxbOMx0OJcsy_VNrzjjhh8blEvIt7kXT-gt/pub?output=csv
  */
 
 const CONFIG = {
   SHEET_ID: '1joLt-JrQuf4HLfSubQYa0Jjd10DG7fk47DC0niaL2Jw',
 
-  // URLs para cada pestaña (se construyen automáticamente con el ID)
+  // URLs para cada pestaña
   get SHEETS() {
     const base = `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
     return {
