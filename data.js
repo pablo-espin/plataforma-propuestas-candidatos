@@ -15,6 +15,8 @@ const Data = (() => {
     red_flags:            null,
     resumen_sectores:     null,
     sectores:             null,
+    preguntas:            null,
+    posiciones:           null,
   };
 
   /**
@@ -122,7 +124,7 @@ const Data = (() => {
    * Carga todas las pestañas en paralelo.
    */
   async function fetchAll() {
-    const [candidatos, propuestas, expertos, comentarios, redflags, resumenes, sectores] = await Promise.all([
+    const [candidatos, propuestas, expertos, comentarios, redflags, resumenes, sectores, preguntas, posiciones] = await Promise.all([
       fetchSheet('candidatos'),
       fetchSheet('propuestas'),
       fetchSheet('expertos'),
@@ -130,8 +132,10 @@ const Data = (() => {
       fetchSheet('red_flags'),
       fetchSheet('resumen_sectores'),
       fetchSheet('sectores'),
+      fetchSheet('preguntas'),
+      fetchSheet('posiciones'),
     ]);
-    return { candidatos, propuestas, expertos, comentarios, redflags, resumenes, sectores };
+    return { candidatos, propuestas, expertos, comentarios, redflags, resumenes, sectores, preguntas, posiciones };
   }
 
   function buildSectorData(sectorNombre, { resumenes, sectores }) {

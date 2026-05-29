@@ -17,6 +17,8 @@ const CONFIG = {
       red_flags:            base + 'red_flags',
       resumen_sectores:     base + 'resumen_sectores',
       sectores:             base + 'sectores',
+      preguntas:            base + 'preguntas',
+      posiciones:           base + 'posiciones',
     };
   },
 

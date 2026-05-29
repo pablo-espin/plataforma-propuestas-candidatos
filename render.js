@@ -303,7 +303,35 @@ const Render = (() => {
     }).join('');
   }
 
-  function sectorCandidateInfoHTML(candidato, resumen) {
+  function posicionesTableHTML(preguntas, resp1, resp2) {
+    if (!preguntas || preguntas.length === 0) return '';
+    const twoCol = !!resp2;
+    const rows = preguntas.map(p => {
+      const r1 = resp1[p.id] || '—';
+      const r2 = twoCol ? (resp2[p.id] || '—') : null;
+      return `
+        <div class="posicion-row${twoCol ? ' three-col' : ''}">
+          <div class="posicion-pregunta">${p.pregunta}</div>
+          <div class="posicion-respuesta">${r1}</div>
+          ${twoCol ? `<div class="posicion-respuesta">${r2}</div>` : ''}
+        </div>`;
+    }).join('');
+    return `<div class="posiciones-table">${rows}</div>`;
+  }
+
+  function posicionesTable(elementId, preguntas, resp1, resp2) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    if (!preguntas || preguntas.length === 0) {
+      el.innerHTML = '';
+      el.hidden = true;
+      return;
+    }
+    el.innerHTML = posicionesTableHTML(preguntas, resp1, resp2);
+    el.hidden = false;
+  }
+
+  function sectorCandidateInfoHTML(candidato, resumen, posicionesHTML = '') {
     if (!resumen || (!resumen.subtitulo && !resumen.resumen && !resumen.precision)) {
       return `<div class="sci-empty">Información de ${candidato.nombre} próximamente.</div>`;
     }
@@ -354,6 +382,7 @@ const Render = (() => {
         <div class="sci-name">${candidato.nombre}</div>
         <div class="sci-party">${candidato.partido}</div>
       </div>
+      ${posicionesHTML}
       ${subtitulo}
       ${chipsRow}
       ${resumenText}
@@ -820,6 +849,8 @@ const Render = (() => {
     sectorCards,
     sectorCandidateSidebar,
     sectorCandidateInfoHTML,
+    posicionesTableHTML,
+    posicionesTable,
     otrosSectores,
     expertosPanel,
     footer,

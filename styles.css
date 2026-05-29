@@ -1194,6 +1194,54 @@ nav {
   padding-bottom: 1.5rem;
 }
 
+/* ─── POSICIONES TABLE ───────────────────────────────────── */
+
+.posiciones-table {
+  margin: 0.5rem 0 1.5rem;
+}
+
+.posicion-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--gray-line);
+  align-items: baseline;
+}
+
+.posicion-row.three-col {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.posicion-pregunta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gray-dark);
+}
+
+.posicion-respuesta {
+  font-size: 13px;
+  color: var(--gray-dark);
+}
+
+@media (max-width: 640px) {
+  .posicion-row,
+  .posicion-row.three-col {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .posicion-pregunta {
+    color: var(--gray-mid);
+    font-size: 12px;
+  }
+
+  .posicion-respuesta {
+    font-size: 13px;
+    padding-bottom: 0.4rem;
+  }
+}
+
 .pss-col-labels {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -250,8 +250,11 @@ const App = (() => {
     });
 
     const resumen = state.sectorData ? state.sectorData.porCandidato[candidatoId] : null;
+    const preguntas = getPreguntasSector(state.currentSector);
+    const respMap = getPosicionesMap(state.currentSector, candidatoId);
+    const posicionesHTML = Render.posicionesTableHTML(preguntas, respMap, null);
     const infoEl = document.getElementById('sector-candidate-info');
-    infoEl.innerHTML = Render.sectorCandidateInfoHTML(candidato, resumen);
+    infoEl.innerHTML = Render.sectorCandidateInfoHTML(candidato, resumen, posicionesHTML);
     infoEl.style.borderLeftColor = candidato.color_hex || CONFIG.COLORS.blue;
   }
 
@@ -287,12 +290,32 @@ const App = (() => {
     const r2 = c2 ? findResumen(sectorName, state.comparaCandidatoId) : null;
     Render.profileSectorSummary(sectorName, c1, r1, c2, r2);
 
+    const preguntas = getPreguntasSector(sectorName);
+    const resp1 = getPosicionesMap(sectorName, state.currentCandidatoId);
+    const resp2 = state.comparaCandidatoId ? getPosicionesMap(sectorName, state.comparaCandidatoId) : null;
+    Render.posicionesTable('profile-posiciones', preguntas, resp1, resp2);
+
     refreshFilters();
   }
 
   function findResumen(sectorName, candidatoId) {
     return (state.allData.resumenes || [])
       .find(r => r.sector === sectorName && r.candidato_id === candidatoId) || null;
+  }
+
+  function getPreguntasSector(sectorName) {
+    return (state.allData.preguntas || [])
+      .filter(p => p.sector === sectorName && (p.visible || '').toLowerCase() === 'si')
+      .sort((a, b) => parseInt(a.orden || 0) - parseInt(b.orden || 0));
+  }
+
+  function getPosicionesMap(sectorName, candidatoId) {
+    const ids = new Set(getPreguntasSector(sectorName).map(p => p.id));
+    const map = {};
+    (state.allData.posiciones || [])
+      .filter(p => p.candidato_id === candidatoId && ids.has(p.pregunta_id) && (p.visible || '').toLowerCase() === 'si')
+      .forEach(p => { map[p.pregunta_id] = p.respuesta; });
+    return map;
   }
 
   function toggleChipInfo(btn) {
