@@ -16,6 +16,8 @@ const App = (() => {
     currentSector:            null,
     sectorData:               null,
     currentSectorCandidatoId: null,
+    availableSectors:     [],
+    currentProfileSector: null,
   };
 
   /* ─────────────────────────────────────────
@@ -98,6 +100,8 @@ const App = (() => {
     state.currentSector = null;
     state.sectorData = null;
     state.currentSectorCandidatoId = null;
+    state.availableSectors = [];
+    state.currentProfileSector = null;
 
     showPage('page-home');
     Render.compareBanner(null, null);
@@ -124,24 +128,30 @@ const App = (() => {
       candidatoData, candidato.nombre, candidato.color_hex,
       null, null, null
     );
-    Render.otrosCandidatos(state.candidatos, id);
     Render.redFlags(candidatoData.redflags);
     Render.compareBanner(null, null);
 
     // Mostrar página
     showPage('page-profile');
+    document.getElementById('compare-btn').style.display = '';
     document.getElementById('clear-compare-btn').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Event listeners de propuestas (alertas y expertos)
     setupProposalEvents();
     setupExpertsPanelEvents();
-    refreshFilters();
+
+    const sectors = Object.keys(candidatoData.porTema)
+      .filter(s => CONFIG.TEMAS[s] && !CONFIG.TEMAS[s].hidden);
+    state.availableSectors = sectors;
+    const defaultSector = sectors.includes('Seguridad') ? 'Seguridad' : sectors[0];
+    if (defaultSector) showProfileSector(defaultSector);
+    else refreshFilters();
   }
 
   async function doCompare() {
-    const sel = document.getElementById('compare-select');
-    const comparaId = sel.value;
+    const btn = document.getElementById('compare-btn');
+    const comparaId = btn && btn.dataset.compareId;
     if (!comparaId) return;
 
     state.comparaCandidatoId = comparaId;
@@ -161,11 +171,12 @@ const App = (() => {
     );
     Render.compareBanner(candidato1.nombre, candidato2.nombre);
 
+    document.getElementById('compare-btn').style.display = 'none';
     document.getElementById('clear-compare-btn').style.display = 'inline-block';
     setupProposalEvents();
-    refreshFilters();
 
-    document.getElementById('proposals-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (state.currentProfileSector) showProfileSector(state.currentProfileSector);
+    else refreshFilters();
   }
 
   function clearCompare() {
@@ -179,9 +190,12 @@ const App = (() => {
     Render.propuestas(data, candidato.nombre, candidato.color_hex, null, null, null);
     Render.compareBanner(null, null);
 
+    document.getElementById('compare-btn').style.display = '';
     document.getElementById('clear-compare-btn').style.display = 'none';
     setupProposalEvents();
-    refreshFilters();
+
+    if (state.currentProfileSector) showProfileSector(state.currentProfileSector);
+    else refreshFilters();
   }
 
   /* ─────────────────────────────────────────
@@ -239,6 +253,46 @@ const App = (() => {
     const infoEl = document.getElementById('sector-candidate-info');
     infoEl.innerHTML = Render.sectorCandidateInfoHTML(candidato, resumen);
     infoEl.style.borderLeftColor = candidato.color_hex || CONFIG.COLORS.blue;
+  }
+
+  function showProfileSector(sectorName) {
+    state.currentProfileSector = sectorName;
+    state.activeSubtemas.clear();
+    state.activeAlerts.clear();
+
+    const cfg = CONFIG.TEMAS[sectorName] || {};
+    const labelEl = document.getElementById('proposals-sector-label');
+    if (labelEl) {
+      labelEl.innerHTML = '';
+      if (cfg.icon) {
+        const iconWrap = document.createElement('span');
+        iconWrap.innerHTML = cfg.icon;
+        labelEl.appendChild(iconWrap);
+      }
+      const text = document.createElement('span');
+      text.textContent = `Propuestas en ${sectorName}`;
+      labelEl.appendChild(text);
+    }
+
+    document.querySelectorAll('#proposals-container .sector-block').forEach(block => {
+      const isActive = block.dataset.sector === sectorName;
+      block.classList.toggle('sector-tab-hidden', !isActive);
+      if (isActive) block.style.display = '';
+    });
+
+    const c1 = state.candidatos.find(c => c.id === state.currentCandidatoId);
+    const r1 = findResumen(sectorName, state.currentCandidatoId);
+    const c2 = state.comparaCandidatoId
+      ? state.candidatos.find(c => c.id === state.comparaCandidatoId) : null;
+    const r2 = c2 ? findResumen(sectorName, state.comparaCandidatoId) : null;
+    Render.profileSectorSummary(sectorName, c1, r1, c2, r2);
+
+    refreshFilters();
+  }
+
+  function findResumen(sectorName, candidatoId) {
+    return (state.allData.resumenes || [])
+      .find(r => r.sector === sectorName && r.candidato_id === candidatoId) || null;
   }
 
   function toggleChipInfo(btn) {
@@ -326,15 +380,6 @@ const App = (() => {
     const newContainer = container.cloneNode(true);
     container.parentNode.replaceChild(newContainer, container);
 
-    // Re-activar acordeones
-    newContainer.querySelectorAll('.sector-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const block = header.closest('.sector-block');
-        const isOpen = block.classList.toggle('open');
-        header.setAttribute('aria-expanded', isOpen);
-      });
-    });
-
     // Botones de alerta y experto
     newContainer.addEventListener('click', e => {
       // Cerrar burbuja (alerta o experto)
@@ -380,7 +425,7 @@ const App = (() => {
   function collectFilterOptions() {
     const subtemas    = new Set();
     const alertLevels = new Set();
-    document.querySelectorAll('#proposals-container .proposal-row').forEach(row => {
+    document.querySelectorAll('#proposals-container .sector-block:not(.sector-tab-hidden) .proposal-row').forEach(row => {
       if (row.dataset.subtema) subtemas.add(row.dataset.subtema);
       if (row.dataset.alerta)  alertLevels.add(row.dataset.alerta);
     });
@@ -389,7 +434,9 @@ const App = (() => {
 
   function refreshFilters() {
     const { subtemas, alertLevels } = collectFilterOptions();
-    Render.filterBar(subtemas, alertLevels, state.activeSubtemas, state.activeAlerts);
+    const sectors = Object.entries(CONFIG.TEMAS)
+      .filter(([nombre, cfg]) => !cfg.hidden && state.availableSectors.includes(nombre));
+Render.filterBar(sectors, state.currentProfileSector, subtemas, alertLevels, state.activeSubtemas, state.activeAlerts);
     Render.applyFilters(state.activeSubtemas, state.activeAlerts);
   }
 
@@ -481,6 +528,7 @@ const App = (() => {
     clearCompare,
     showSector,
     showSectorCandidate,
+    showProfileSector,
     toggleChipInfo,
   };
 

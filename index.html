@@ -18,12 +18,12 @@
   <meta name="twitter:description" content="Analice y compare las propuestas presidenciales en cinco sectores clave, con alertas identificadas por expertos." />
   <meta name="twitter:image" content="https://propuestascandidatos.fedecolombia.org/img/propuestas-thumbnail.jpg" />
 
-  <!-- Privacy-friendly analytics by Plausible -->
+  <!-- Privacy-friendly analytics by Plausible
   <script async src="https://plausible.io/js/pa-zBm3J4RpGVOksiUTMnpqi.js"></script>
   <script>
     window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
     plausible.init()
-  </script>
+  </script> -->
 
   <link rel="icon" href="img/logo-fede.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
@@ -64,7 +64,7 @@
       <div class="home-header-content">
         <div class="year-badge">Elecciones 2026</div>
         <h1>Las propuestas de los candidatos presidenciales<br>y las alertas identificadas por expertos</h1>
-        <p>Analice y compare en un solo lugar los programas en cinco temas clave. Encuentre las amenazas identificadas por expertos en los diferentes sectores y para el Estado de Derecho.</p>
+        <p>Analice y compare en un solo lugar los programas en cinco temas clave. Encuentre los riesgos, aciertos y amenazas identificadas por expertos en los diferentes sectores y para el Estado de Derecho.</p>
       </div>
     </header>
 
@@ -135,32 +135,23 @@
       </div>
     </div>
 
-    <!-- Controles de comparación -->
-    <div class="profile-actions">
-      <label for="compare-select" class="sr-only">Seleccionar candidato para comparar</label>
-      <select id="compare-select" aria-label="Comparar con otro candidato">
-        <option value="">— Comparar con otro candidato —</option>
-      </select>
-      <button class="compare-btn" onclick="App.doCompare()">Comparar</button>
-      <button id="clear-compare-btn" onclick="App.clearCompare()">✕ Quitar comparación</button>
-    </div>
-
     <!-- Propuestas -->
     <main>
       <div class="proposals-wrapper">
         <div id="filter-bar" class="filter-bar"></div>
-        <span class="proposals-section-label">Propuestas</span>
-        <div class="proposals-container" id="proposals-container">
+        <div class="proposals-content-block">
+          <div class="proposals-compare-row">
+            <button id="compare-btn" class="compare-btn" onclick="App.doCompare()"></button>
+            <button id="clear-compare-btn" onclick="App.clearCompare()">✕ Quitar comparación</button>
+          </div>
+          <div id="proposals-sector-label" class="proposals-sector-label"></div>
+          <div id="profile-sector-summary" class="profile-sector-summary" hidden></div>
+          <div class="proposals-container" id="proposals-container"></div>
+        </div>
+        <div class="proposals-profile-link-row">
+          <button id="profile-link-btn" class="profile-link-btn"></button>
         </div>
       </div>
-
-      <!-- Ver otro candidato -->
-      <section id="otros-candidatos-section" aria-label="Ver otro candidato">
-        <div class="otros-inner">
-          <h2 class="otros-title">Ver otro candidato</h2>
-          <div id="otros-candidatos-grid" class="otros-grid"></div>
-        </div>
-      </section>
 
       <!-- Red Flags -->
       <section id="red-flags-section" aria-label="Red Flags">

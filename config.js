@@ -4,10 +4,10 @@
  */
 
 const CONFIG = {
-  SHEET_ID: '1joLt-JrQuf4HLfSubQYa0Jjd10DG7fk47DC0niaL2Jw',
+  SHEET_ID: '116rf6RK1l5kqredZKK47F55tif2GGw2474vKdZUPrFM' // '1joLt-JrQuf4HLfSubQYa0Jjd10DG7fk47DC0niaL2Jw'
 
   // URLs para cada pestaña
-  get SHEETS() {
+  ,get SHEETS() {
     const base = `https://docs.google.com/spreadsheets/d/${this.SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`;
     return {
       candidatos:           base + 'candidatos',

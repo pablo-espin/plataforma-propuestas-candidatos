@@ -90,12 +90,24 @@ const Render = (() => {
   ───────────────────────────────────────── */
 
   function compareSelect(candidatos, currentId) {
-    const sel = document.getElementById('compare-select');
-    sel.innerHTML = '<option value="">— Comparar con otro candidato —</option>' +
-      candidatos
-        .filter(c => c.id !== currentId)
-        .map(c => `<option value="${c.id}">${c.nombre}</option>`)
-        .join('');
+    const compareBtn = document.getElementById('compare-btn');
+    const profileBtn = document.getElementById('profile-link-btn');
+    const other = candidatos.find(c => c.id !== currentId);
+    if (other) {
+      if (compareBtn) {
+        compareBtn.textContent = `Comparar con ${other.nombre}`;
+        compareBtn.dataset.compareId = other.id;
+        compareBtn.style.display = '';
+      }
+      if (profileBtn) {
+        profileBtn.textContent = `Ver perfil de ${other.nombre} →`;
+        profileBtn.onclick = () => App.showCandidato(other.id);
+        profileBtn.style.display = '';
+      }
+    } else {
+      if (compareBtn) compareBtn.style.display = 'none';
+      if (profileBtn) profileBtn.style.display = 'none';
+    }
   }
 
   /* ─────────────────────────────────────────
@@ -111,30 +123,15 @@ const Render = (() => {
     if (twoCol) {
       container.innerHTML = `
         <div class="proposals-col">
-          <div class="col-label" style="border-color:${candidatoColor||CONFIG.COLORS.blue}">
-            <span class="col-dot" style="background:${candidatoColor||CONFIG.COLORS.blue}"></span>
-            ${candidatoNombre}
-          </div>
           ${renderColumna(candidatoData)}
         </div>
         <div class="proposals-col">
-          <div class="col-label" style="border-color:${comparaColor||CONFIG.COLORS.orange}">
-            <span class="col-dot" style="background:${comparaColor||CONFIG.COLORS.orange}"></span>
-            ${comparaNombre}
-          </div>
           ${renderColumna(comparaData)}
         </div>`;
     } else {
       container.innerHTML = `<div class="proposals-col">${renderColumna(candidatoData)}</div>`;
     }
 
-    // Activar acordeones
-    container.querySelectorAll('.sector-header').forEach(header => {
-      header.addEventListener('click', () => {
-        const block = header.closest('.sector-block');
-        block.classList.toggle('open');
-      });
-    });
   }
 
   function renderColumna(data) {
@@ -147,15 +144,8 @@ const Render = (() => {
       const isOpen = idx === 0 ? 'open' : '';
 
       return `
-        <div class="sector-block ${isOpen}">
-          <button class="sector-header" aria-expanded="${idx === 0}">
-            <div class="sector-title">
-              <span class="sector-icon" style="background:${cfg.bg};" aria-hidden="true">${cfg.icon}</span>
-              <span>${tema}</span>
-            </div>
-            <span class="sector-chevron" aria-hidden="true">▾</span>
-          </button>
-          <div class="sector-body" role="region">
+        <div class="sector-block open" data-sector="${tema}">
+          <div class="sector-body">
             ${items.map(p => renderPropuesta(p)).join('')}
           </div>
         </div>`;
@@ -572,16 +562,32 @@ const Render = (() => {
      FILTROS
   ───────────────────────────────────────── */
 
-  function filterBar(subtemas, alertLevels, activeSubtemas, activeAlerts) {
+  function filterBar(sectors, activeSector, subtemas, alertLevels, activeSubtemas, activeAlerts) {
     const bar = document.getElementById('filter-bar');
     if (!bar) return;
 
-    if (subtemas.length === 0 && alertLevels.length === 0) {
+    if (sectors.length === 0 && subtemas.length === 0 && alertLevels.length === 0) {
       bar.style.display = 'none';
       return;
     }
 
     const alertLabels = { amarillo: 'Alerta', rojo: 'Amenaza' };
+
+    const sectorsGroup = sectors.length > 0 ? `
+      <div class="filter-group filter-group-sectors">
+        <span class="filter-label">Sectores</span>
+        <div class="filter-sector-tabs">
+          ${sectors.map(([nombre, cfg]) => `
+            <button class="sector-tab-btn${activeSector === nombre ? ' active' : ''}"
+                    data-sector="${nombre}"
+                    style="--sector-color:${cfg.color}"
+                    onclick="App.showProfileSector('${nombre}')">
+              <span class="sector-tab-icon">${cfg.icon}</span>
+              <span class="sector-tab-name">${nombre}</span>
+            </button>
+          `).join('')}
+        </div>
+      </div>` : '';
 
     const subtemasGroup = subtemas.length > 0 ? `
       <div class="filter-group">
@@ -612,10 +618,100 @@ const Render = (() => {
     bar.style.display = 'flex';
     bar.innerHTML = `
       <span class="proposals-section-label">Filtros</span>
+      ${sectorsGroup}
       ${subtemasGroup}
       ${alertsGroup}
       <button class="filter-clear" id="filter-clear"
               style="display:${hasActive ? 'inline-flex' : 'none'}">✕ Limpiar filtros</button>`;
+  }
+
+  function profileSectorSummary(sectorName, c1, r1, c2, r2) {
+    const el = document.getElementById('profile-sector-summary');
+    if (!el) return;
+
+    const hasContent = (r) => r && (r.subtitulo || r.resumen || r.precision);
+    const twoCol = !!c2;
+
+    if (!twoCol && !hasContent(r1)) {
+      el.innerHTML = '';
+      el.hidden = true;
+      return;
+    }
+
+    const colLabels = twoCol ? `
+      <div class="pss-col-labels">
+        <div class="col-label" style="border-color:${c1.color_hex || CONFIG.COLORS.blue}">
+          <span class="col-dot" style="background:${c1.color_hex || CONFIG.COLORS.blue}"></span>
+          ${c1.nombre}
+        </div>
+        <div class="col-label" style="border-color:${c2.color_hex || CONFIG.COLORS.orange}">
+          <span class="col-dot" style="background:${c2.color_hex || CONFIG.COLORS.orange}"></span>
+          ${c2.nombre}
+        </div>
+      </div>` : '';
+
+    const showSummaries = hasContent(r1) || hasContent(r2);
+
+    el.innerHTML = `
+      ${colLabels}
+      ${showSummaries ? `
+      <div class="pss-cols${twoCol ? ' two-col' : ''}">
+        <div class="pss-col">
+          ${sectorSummaryHTML(c1, r1)}
+        </div>
+        ${twoCol ? `
+        <div class="pss-col">
+          ${sectorSummaryHTML(c2, r2)}
+        </div>` : ''}
+      </div>` : ''}`;
+    el.hidden = false;
+  }
+
+  function sectorSummaryHTML(candidato, resumen) {
+    if (!resumen || (!resumen.subtitulo && !resumen.resumen && !resumen.precision)) {
+      return `<div class="pss-empty">Resumen de ${candidato.nombre} en este sector próximamente.</div>`;
+    }
+
+    const chip = (label, val) => {
+      if (!val) return '';
+      const cls = 'chip-' + val.toLowerCase().replace(/\s+/g, '-');
+      return `
+        <div class="chip-group">
+          <span class="chip-dim">${label}</span>
+          <span class="chip ${cls}">${val}</span>
+        </div>`;
+    };
+
+    const chips = [
+      chip('Precisión', resumen.precision),
+      chip('Viabilidad', resumen.viabilidad),
+      chip('Coherencia', resumen.coherencia),
+    ].filter(Boolean).join('');
+
+    const chipsRow = chips ? `
+      <div class="sci-chips-row">
+        ${chips}
+        <div class="chip-info-wrapper">
+          <button class="chip-info-btn"
+                  onclick="App.toggleChipInfo(this); event.stopPropagation()"
+                  aria-label="¿Qué significan estos indicadores?">i</button>
+          <div class="chip-info-popup" hidden>
+            <p><strong>Precisión:</strong> Qué tan específica y detallada es la propuesta.</p>
+            <p><strong>Viabilidad:</strong> Qué tan realizable es dada la situación fiscal, institucional y política.</p>
+            <p><strong>Coherencia:</strong> Si es coherente con el programa general del candidato.</p>
+          </div>
+        </div>
+      </div>` : '';
+
+    const subtitulo = resumen.subtitulo
+      ? `<div class="sci-subtitle">${resumen.subtitulo}</div>` : '';
+    const resumenText = resumen.resumen
+      ? `<div class="sci-summary">${resumen.resumen.split(/\n+/).filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('')}</div>` : '';
+
+    return `
+      ${subtitulo}
+      ${chipsRow}
+      ${resumenText}`;
   }
 
   function applyFilters(activeSubtemas, activeAlerts) {
@@ -629,7 +725,7 @@ const Render = (() => {
       row.classList.toggle('proposal-filtered-out', !show);
     });
 
-    document.querySelectorAll('#proposals-container .sector-block').forEach(block => {
+    document.querySelectorAll('#proposals-container .sector-block:not(.sector-tab-hidden)').forEach(block => {
       const body = block.querySelector('.sector-body');
       if (!body) return;
       const hasVisible = body.querySelectorAll('.proposal-row:not(.proposal-filtered-out)').length > 0;
@@ -711,6 +807,7 @@ const Render = (() => {
     otrosCandidatos,
     redFlags,
     filterBar,
+    profileSectorSummary,
     applyFilters,
     modalAlerta,
     modalExperto,
