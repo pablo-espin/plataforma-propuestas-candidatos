@@ -846,7 +846,7 @@ nav {
 
 .compare-btn {
   background: none;
-  color: var(--gray-dark);
+  color: #666;
   border: none;
   padding: 10px 8px;
   font-size: 14px;
@@ -1017,15 +1017,17 @@ nav {
   font-family: var(--font-title);
   font-size: clamp(22px, 3vw, 30px);
   font-weight: 800;
+  line-height: 1.1;
   color: var(--gray-dark);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 16px;
   width: 100%;
+  padding-left: 1rem;
   margin: 1.5rem 0 1rem;
-  text-align: center;
 }
+
 
 .proposals-sector-label img {
   width: 32px;
@@ -1140,7 +1142,7 @@ nav {
 
 .filter-sector-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
 }
 
@@ -1151,8 +1153,8 @@ nav {
   justify-content: center;
   gap: 5px;
   padding: 10px 16px;
-  min-width: 90px;
-  background: transparent;
+  flex: 1;
+  min-width: 0;
   background: white;
   border: 2px solid var(--gray-line);
   border-radius: 0;
@@ -1169,7 +1171,7 @@ nav {
 
 .sector-tab-btn .sector-tab-name {
   font-family: var(--font-title);
-  font-size: 11px;
+  font-size: clamp(9px, 2.2vw, 11px);
   font-weight: 700;
   color: var(--gray-dark);
   transition: color var(--transition);
@@ -1211,7 +1213,7 @@ nav {
 
 .pss-col {
   background: white;
-  padding: 1.25rem 1.5rem;
+  padding: 1.25rem 0.5rem;
 }
 
 .pss-empty {
@@ -1237,7 +1239,7 @@ nav {
 
 .proposals-content-block {
   background: white;
-  padding: 1.75rem 2rem 2rem;
+  padding: 0.5rem 0.75rem 2rem;
 }
 
 .proposals-container {
