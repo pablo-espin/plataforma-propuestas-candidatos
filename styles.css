@@ -1239,7 +1239,7 @@ nav {
 
 .proposals-content-block {
   background: white;
-  padding: 0.5rem 0.75rem 2rem;
+  padding: 1.75rem 2rem 2rem;
 }
 
 .proposals-container {
@@ -1959,6 +1959,7 @@ nav {
   #filter-bar .proposals-section-label { margin-bottom: 0; }
 
   .proposals-wrapper { padding: 1rem 1rem 2.5rem; }
+  .proposals-content-block { padding: 0.5rem 0.75rem 2rem; }
 
   .proposal-row { flex-direction: column; }
   .proposal-comments-panel {
