@@ -71,7 +71,7 @@ const App = (() => {
         return;
       }
 
-      Render.home(state.candidatos);
+      Render.home(hourlyRotate(state.candidatos));
       Render.sectorCards();
       Render.footer(state.candidatos);
       setupHomeEvents();
@@ -283,17 +283,15 @@ const App = (() => {
       if (isActive) block.style.display = '';
     });
 
-    const c1 = state.candidatos.find(c => c.id === state.currentCandidatoId);
-    const r1 = findResumen(sectorName, state.currentCandidatoId);
-    const c2 = state.comparaCandidatoId
-      ? state.candidatos.find(c => c.id === state.comparaCandidatoId) : null;
-    const r2 = c2 ? findResumen(sectorName, state.comparaCandidatoId) : null;
-    Render.profileSectorSummary(sectorName, c1, r1, c2, r2);
+    const el = document.getElementById('profile-sector-summary');
+    if (el) el.hidden = true;
 
     const preguntas = getPreguntasSector(sectorName);
     const resp1 = getPosicionesMap(sectorName, state.currentCandidatoId);
     const resp2 = state.comparaCandidatoId ? getPosicionesMap(sectorName, state.comparaCandidatoId) : null;
-    Render.posicionesTable('profile-posiciones', preguntas, resp1, resp2);
+    const c1 = state.candidatos.find(c => c.id === state.currentCandidatoId);
+    const c2 = state.comparaCandidatoId ? state.candidatos.find(c => c.id === state.comparaCandidatoId) : null;
+    Render.posicionesTable('profile-posiciones', preguntas, resp1, resp2, c1?.color_hex, c2?.color_hex);
 
     refreshFilters();
   }
@@ -316,6 +314,11 @@ const App = (() => {
       .filter(p => p.candidato_id === candidatoId && ids.has(p.pregunta_id) && (p.visible || '').toLowerCase() === 'si')
       .forEach(p => { map[p.pregunta_id] = p.respuesta; });
     return map;
+  }
+
+  function hourlyRotate(arr) {
+    const offset = Math.floor(Date.now() / 3_600_000) % arr.length;
+    return [...arr.slice(offset), ...arr.slice(0, offset)];
   }
 
   function toggleChipInfo(btn) {

@@ -95,7 +95,12 @@ const Render = (() => {
     const other = candidatos.find(c => c.id !== currentId);
     if (other) {
       if (compareBtn) {
-        compareBtn.textContent = `Comparar con ${other.nombre}`;
+        compareBtn.textContent = 'Comparar con ';
+        const nameSpan = document.createElement('span');
+        nameSpan.style.color = other.color_hex || CONFIG.COLORS.blue;
+        nameSpan.style.fontFamily = 'var(--font-title)';
+        nameSpan.textContent = other.nombre;
+        compareBtn.appendChild(nameSpan);
         compareBtn.dataset.compareId = other.id;
         compareBtn.style.display = '';
       }
@@ -123,9 +128,17 @@ const Render = (() => {
     if (twoCol) {
       container.innerHTML = `
         <div class="proposals-col">
+          <div class="col-label" style="border-color:${candidatoColor || CONFIG.COLORS.blue};color:${candidatoColor || CONFIG.COLORS.blue}">
+            <span class="col-dot" style="background:${candidatoColor || CONFIG.COLORS.blue}"></span>
+            ${candidatoNombre}
+          </div>
           ${renderColumna(candidatoData)}
         </div>
         <div class="proposals-col">
+          <div class="col-label" style="border-color:${comparaColor || CONFIG.COLORS.orange};color:${comparaColor || CONFIG.COLORS.orange}">
+            <span class="col-dot" style="background:${comparaColor || CONFIG.COLORS.orange}"></span>
+            ${comparaNombre}
+          </div>
           ${renderColumna(comparaData)}
         </div>`;
     } else {
@@ -303,23 +316,25 @@ const Render = (() => {
     }).join('');
   }
 
-  function posicionesTableHTML(preguntas, resp1, resp2) {
+  function posicionesTableHTML(preguntas, resp1, resp2, color1, color2) {
     if (!preguntas || preguntas.length === 0) return '';
     const twoCol = !!resp2;
-    const rows = preguntas.map(p => {
+    const rows = preguntas.map((p) => {
       const r1 = resp1[p.id] || '—';
       const r2 = twoCol ? (resp2[p.id] || '—') : null;
+      const s1 = twoCol && color1 ? ` style="--candidate-color:${color1}"` : '';
+      const s2 = twoCol && color2 ? ` style="--candidate-color:${color2}"` : '';
       return `
         <div class="posicion-row${twoCol ? ' three-col' : ''}">
           <div class="posicion-pregunta">${p.pregunta}</div>
-          <div class="posicion-respuesta">${r1}</div>
-          ${twoCol ? `<div class="posicion-respuesta">${r2}</div>` : ''}
+          <div class="posicion-respuesta"${s1}>${r1}</div>
+          ${twoCol ? `<div class="posicion-respuesta"${s2}>${r2}</div>` : ''}
         </div>`;
     }).join('');
     return `<div class="posiciones-table">${rows}</div>`;
   }
 
-  function posicionesTable(elementId, preguntas, resp1, resp2) {
+  function posicionesTable(elementId, preguntas, resp1, resp2, color1, color2) {
     const el = document.getElementById(elementId);
     if (!el) return;
     if (!preguntas || preguntas.length === 0) {
@@ -327,7 +342,7 @@ const Render = (() => {
       el.hidden = true;
       return;
     }
-    el.innerHTML = posicionesTableHTML(preguntas, resp1, resp2);
+    el.innerHTML = posicionesTableHTML(preguntas, resp1, resp2, color1, color2);
     el.hidden = false;
   }
 
