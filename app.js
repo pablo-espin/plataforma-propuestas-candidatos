@@ -24,6 +24,8 @@ const App = (() => {
      INIT
   ───────────────────────────────────────── */
 
+  let _buildDotGrid = null;
+
   function initDotGrid() {
     const grid = document.getElementById('dot-grid');
     if (!grid) return;
@@ -33,6 +35,7 @@ const App = (() => {
     function build() {
       const w = header.offsetWidth;
       const h = header.offsetHeight;
+      if (w === 0 || h === 0) return;
       const cols = Math.ceil(w / STEP) + 1;
       const rows = Math.ceil(h / STEP) + 1;
       const total = cols * rows;
@@ -51,6 +54,7 @@ const App = (() => {
       grid.appendChild(frag);
     }
 
+    _buildDotGrid = build;
     build();
     window.addEventListener('resize', build);
   }
@@ -104,6 +108,7 @@ const App = (() => {
     state.currentProfileSector = null;
 
     showPage('page-home');
+    if (_buildDotGrid) _buildDotGrid();
     Render.compareBanner(null, null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
