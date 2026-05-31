@@ -209,7 +209,7 @@ const App = (() => {
 
   async function showSector(sectorNombre) {
     const temaCfg = CONFIG.TEMAS[sectorNombre];
-    if (temaCfg && temaCfg.hidden) return;
+    if (temaCfg && (temaCfg.hidden || temaCfg.noSectorPage)) return;
     state.currentSector = sectorNombre;
     const sectorData = Data.buildSectorData(sectorNombre, state.allData);
     state.sectorData = sectorData;
@@ -296,7 +296,7 @@ const App = (() => {
     const resp2 = state.comparaCandidatoId ? getPosicionesMap(sectorName, state.comparaCandidatoId) : null;
     const c1 = state.candidatos.find(c => c.id === state.currentCandidatoId);
     const c2 = state.comparaCandidatoId ? state.candidatos.find(c => c.id === state.comparaCandidatoId) : null;
-    Render.posicionesTable('profile-posiciones', preguntas, resp1, resp2, c1?.color_hex, c2?.color_hex);
+    Render.posicionesTable('profile-posiciones', preguntas, resp1, resp2, c1?.color_hex, c2?.color_hex, c1?.nombre, c2?.nombre);
 
     refreshFilters();
   }

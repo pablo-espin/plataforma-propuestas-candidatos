@@ -128,14 +128,14 @@ const Render = (() => {
     if (twoCol) {
       container.innerHTML = `
         <div class="proposals-col">
-          <div class="col-label" style="border-color:${candidatoColor || CONFIG.COLORS.blue};color:${candidatoColor || CONFIG.COLORS.blue}">
+          <div class="col-label" style="border-color:${candidatoColor || CONFIG.COLORS.blue}">
             <span class="col-dot" style="background:${candidatoColor || CONFIG.COLORS.blue}"></span>
             ${candidatoNombre}
           </div>
           ${renderColumna(candidatoData)}
         </div>
         <div class="proposals-col">
-          <div class="col-label" style="border-color:${comparaColor || CONFIG.COLORS.orange};color:${comparaColor || CONFIG.COLORS.orange}">
+          <div class="col-label" style="border-color:${comparaColor || CONFIG.COLORS.orange}">
             <span class="col-dot" style="background:${comparaColor || CONFIG.COLORS.orange}"></span>
             ${comparaNombre}
           </div>
@@ -275,7 +275,7 @@ const Render = (() => {
     const grid = document.getElementById('sectores-grid');
     if (!grid) return;
     grid.innerHTML = Object.entries(CONFIG.TEMAS)
-      .filter(([, cfg]) => !cfg.hidden)
+      .filter(([, cfg]) => !cfg.hidden && !cfg.noSectorPage)
       .map(([nombre, cfg]) => sectorCardHTML(nombre, cfg))
       .join('');
   }
@@ -316,25 +316,27 @@ const Render = (() => {
     }).join('');
   }
 
-  function posicionesTableHTML(preguntas, resp1, resp2, color1, color2) {
+  function posicionesTableHTML(preguntas, resp1, resp2, color1, color2, nombre1, nombre2) {
     if (!preguntas || preguntas.length === 0) return '';
     const twoCol = !!resp2;
+    const ini1 = twoCol && nombre1 ? getIniciales(nombre1) : '';
+    const ini2 = twoCol && nombre2 ? getIniciales(nombre2) : '';
+    const badge = (ini, color) =>
+      ini ? `<span class="posicion-initials" style="background:${color}">${ini}</span>` : '';
     const rows = preguntas.map((p) => {
       const r1 = resp1[p.id] || '—';
       const r2 = twoCol ? (resp2[p.id] || '—') : null;
-      const s1 = twoCol && color1 ? ` style="--candidate-color:${color1}"` : '';
-      const s2 = twoCol && color2 ? ` style="--candidate-color:${color2}"` : '';
       return `
         <div class="posicion-row${twoCol ? ' three-col' : ''}">
           <div class="posicion-pregunta">${p.pregunta}</div>
-          <div class="posicion-respuesta"${s1}>${r1}</div>
-          ${twoCol ? `<div class="posicion-respuesta"${s2}>${r2}</div>` : ''}
+          <div class="posicion-respuesta">${badge(ini1, color1)}${r1}</div>
+          ${twoCol ? `<div class="posicion-respuesta">${badge(ini2, color2)}${r2}</div>` : ''}
         </div>`;
     }).join('');
     return `<div class="posiciones-table">${rows}</div>`;
   }
 
-  function posicionesTable(elementId, preguntas, resp1, resp2, color1, color2) {
+  function posicionesTable(elementId, preguntas, resp1, resp2, color1, color2, nombre1, nombre2) {
     const el = document.getElementById(elementId);
     if (!el) return;
     if (!preguntas || preguntas.length === 0) {
@@ -342,7 +344,7 @@ const Render = (() => {
       el.hidden = true;
       return;
     }
-    el.innerHTML = posicionesTableHTML(preguntas, resp1, resp2, color1, color2);
+    el.innerHTML = posicionesTableHTML(preguntas, resp1, resp2, color1, color2, nombre1, nombre2);
     el.hidden = false;
   }
 
@@ -412,7 +414,7 @@ const Render = (() => {
     const grid = document.getElementById('otros-sectores-grid');
     if (!grid) return;
     grid.innerHTML = Object.entries(CONFIG.TEMAS)
-      .filter(([nombre, cfg]) => nombre !== currentSector && !cfg.hidden)
+      .filter(([nombre, cfg]) => nombre !== currentSector && !cfg.hidden && !cfg.noSectorPage)
       .map(([nombre, cfg]) => sectorCardHTML(nombre, cfg))
       .join('');
   }
@@ -835,7 +837,7 @@ const Render = (() => {
     const sectorsList = document.getElementById('footer-sectors-list');
     if (sectorsList) {
       sectorsList.innerHTML = Object.entries(CONFIG.TEMAS)
-        .filter(([, cfg]) => !cfg.hidden)
+        .filter(([, cfg]) => !cfg.hidden && !cfg.noSectorPage)
         .map(([nombre]) => `<li><button onclick="App.showSector('${nombre}')">${nombre}</button></li>`)
         .join('');
     }
