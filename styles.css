@@ -1583,6 +1583,42 @@ nav {
   transform: translate(2px, 2px);
 }
 
+.expert-btn--logo {
+  background: white;
+  padding: 4px;
+}
+
+.expert-btn--logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.ecb-avatar--logo {
+  background: white;
+  padding: 2px;
+}
+
+.ecb-avatar--logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.ep-avatar--logo {
+  background: white;
+  padding: 4px;
+}
+
+.ep-avatar--logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
 /* ─── EXPERT COMMENT BUBBLES (inline, Google Docs style) ─ */
 
 .proposal-comments-panel {

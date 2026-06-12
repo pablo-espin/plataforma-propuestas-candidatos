@@ -236,27 +236,36 @@ const Render = (() => {
   }
 
   function renderExpertBtn(expert, propuestaId, index) {
-    const iniciales = getIniciales(expert.nombre);
     const commentId = `ec-${propuestaId}-${index}`;
+    const safeLogo = expert.logo ? safeImgUrl(expert.logo) : '';
+    const isLogo = !!safeLogo;
+    const content = isLogo
+      ? `<img src="${escapeAttr(safeLogo)}" alt="${escapeAttr(expert.nombre)}">`
+      : getIniciales(expert.nombre);
     return `
-      <button class="expert-btn"
+      <button class="expert-btn${isLogo ? ' expert-btn--logo' : ''}"
               data-propuesta-id="${propuestaId}"
               data-type="expert"
               data-comment-id="${commentId}"
-              style="background:${expert.color};"
+              ${isLogo ? '' : `style="background:${expert.color};"`}
               title="Comentario de ${expert.nombre}"
               aria-label="Ver comentario de experto: ${expert.nombre}">
-        ${iniciales}
+        ${content}
       </button>`;
   }
 
   function renderExpertCommentBubble(expert, propuestaId, index) {
     const commentId = `ec-${propuestaId}-${index}`;
-    const iniciales = getIniciales(expert.nombre);
+    const safeLogo = expert.logo ? safeImgUrl(expert.logo) : '';
+    const isLogo = !!safeLogo;
+    const avatarContent = isLogo
+      ? `<img src="${escapeAttr(safeLogo)}" alt="${escapeAttr(expert.nombre)}">`
+      : getIniciales(expert.nombre);
+    const avatarStyle = isLogo ? '' : `background:${expert.color}`;
     return `
       <div class="expert-comment-bubble" id="${commentId}" style="border-left-color:${expert.color}" hidden>
         <div class="ecb-header">
-          <div class="ecb-avatar" style="background:${expert.color}">${iniciales}</div>
+          <div class="ecb-avatar${isLogo ? ' ecb-avatar--logo' : ''}" ${avatarStyle ? `style="${avatarStyle}"` : ''}>${avatarContent}</div>
           <div class="ecb-meta">
             <div class="ecb-name">${expert.nombre}</div>
             <div class="ecb-role">${expert.rol}</div>
@@ -575,6 +584,22 @@ const Render = (() => {
      HELPERS
   ───────────────────────────────────────── */
 
+  function escapeAttr(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function safeImgUrl(u) {
+    try {
+      const x = new URL(u, location.href);
+      return /^https?:$/.test(x.protocol) ? x.href : '';
+    } catch (e) { return ''; }
+  }
+
   function parseLinks(text) {
     return text.replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
       '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
@@ -808,10 +833,15 @@ const Render = (() => {
     }
 
     list.innerHTML = experts.map(exp => {
-      const iniciales = getIniciales(exp.nombre);
+      const safeLogo = exp.logo ? safeImgUrl(exp.logo) : '';
+      const isLogo = !!safeLogo;
+      const avatarContent = isLogo
+        ? `<img src="${escapeAttr(safeLogo)}" alt="${escapeAttr(exp.nombre)}">`
+        : getIniciales(exp.nombre);
+      const avatarStyle = isLogo ? '' : `background:${exp.color}`;
       return `
         <div class="ep-expert">
-          <div class="ep-avatar" style="background:${exp.color}" aria-hidden="true">${iniciales}</div>
+          <div class="ep-avatar${isLogo ? ' ep-avatar--logo' : ''}" ${avatarStyle ? `style="${avatarStyle}"` : ''} aria-hidden="true">${avatarContent}</div>
           <div class="ep-info">
             <div class="ep-name">${exp.nombre}</div>
             <div class="ep-role">${exp.rol}</div>

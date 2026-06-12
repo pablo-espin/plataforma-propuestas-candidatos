@@ -171,6 +171,7 @@ const Data = (() => {
             nombre:     exp.nombre,
             rol:        exp.rol,
             color:      exp.color_hex || CONFIG.COLORS.blue,
+            logo:       exp.logo || null,
             comentario: c.comentario,
           });
           return acc;
